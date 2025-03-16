@@ -8,4 +8,4 @@ function App({ placesCount }: AppScreenProps): JSX.Element {
   return <Main placesCount={placesCount} />;
 }
 
-export default App;
+export { App };
