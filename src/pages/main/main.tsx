@@ -2,7 +2,7 @@ type MainProps = {
   placesCount: number;
 };
 
-function Main({placesCount}:MainProps): JSX.Element {
+function Main({ placesCount }: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
