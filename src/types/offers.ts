@@ -1,0 +1,23 @@
+type OffersData = {
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  city: OffersCity;
+  location: LocationData;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage: string;
+};
+type LocationData = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+type OffersCity = {
+  name: string;
+  location: LocationData;
+};
+
+export type { OffersData };
