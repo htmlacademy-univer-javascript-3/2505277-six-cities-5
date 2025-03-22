@@ -1,5 +1,6 @@
 import { OffersData } from '../types/offers';
 import { nanoid } from 'nanoid';
+import { getRandomNum } from '../utils/common';
 
 const offers: OffersData[] = [
   {
@@ -20,8 +21,8 @@ const offers: OffersData[] = [
       longitude: 4.673877537499948,
       zoom: 8,
     },
-    isFavorite: false,
-    isPremium: true,
+    isFavorite: Boolean(getRandomNum(0, 1)),
+    isPremium: Boolean(getRandomNum(0, 1)),
     rating: 4,
     previewImage: 'https://url-to-image/image.png',
   },
@@ -43,8 +44,8 @@ const offers: OffersData[] = [
       longitude: 4.351721,
       zoom: 9,
     },
-    isFavorite: true,
-    isPremium: false,
+    isFavorite: Boolean(getRandomNum(0, 1)),
+    isPremium: Boolean(getRandomNum(0, 1)),
     rating: 3,
     previewImage: 'https://url-to-image/image.png',
   },
@@ -66,8 +67,8 @@ const offers: OffersData[] = [
       longitude: 2.352222,
       zoom: 6,
     },
-    isFavorite: true,
-    isPremium: true,
+    isFavorite: Boolean(getRandomNum(0, 1)),
+    isPremium: Boolean(getRandomNum(0, 1)),
     rating: 5,
     previewImage: 'https://url-to-image/image.png',
   },
@@ -90,8 +91,8 @@ const offers: OffersData[] = [
       longitude: 9.993682,
       zoom: 5,
     },
-    isFavorite: false,
-    isPremium: false,
+    isFavorite: Boolean(getRandomNum(0, 1)),
+    isPremium: Boolean(getRandomNum(0, 1)),
     rating: 4,
     previewImage: 'https://url-to-image/image.png',
   },
