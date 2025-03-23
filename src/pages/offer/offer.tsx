@@ -2,10 +2,18 @@ import { useState } from 'react';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { nanoid } from 'nanoid';
 
+type OfferProps = {
+  rating: number;
+  text: string;
+  date: string;
+};
+
 function Offer(): JSX.Element {
-  const [comments, setComments] = useState<string[]>([]);
-  const handleCommentSubmit = (newComment: string) => {
-    setComments([...comments, newComment]);
+  const [reviews, setReviews] = useState<OfferProps[]>([
+    { rating: 4, text: 'Great place to stay!', date: '2024-03-22' },
+  ]);
+  const addReview = (newReview: OfferProps) => {
+    setReviews([newReview, ...reviews]);
   };
   return (
     <div className="page">
@@ -179,41 +187,42 @@ function Offer(): JSX.Element {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">1</span>
+                  Reviews &middot;{' '}
+                  <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img
-                          className="reviews__avatar user__avatar"
-                          src="img/avatar-max.jpg"
-                          width="54"
-                          height="54"
-                          alt="Reviews avatar"
-                        />
-                      </div>
-                      <span className="reviews__user-name">Max</span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{ width: '80%' }}></span>
-                          <span className="visually-hidden">Rating</span>
+                  {reviews.map((review) => (
+                    <li key={nanoid()} className="reviews__item">
+                      <div className="reviews__user user">
+                        <div className="reviews__avatar-wrapper user__avatar-wrapper">
+                          <img
+                            className="reviews__avatar user__avatar"
+                            src="img/avatar-max.jpg"
+                            width="54"
+                            height="54"
+                            alt="Reviews avatar"
+                          />
                         </div>
+                        <span className="reviews__user-name">Max</span>
                       </div>
-                      {comments.map((comment) => (
-                        <p key={nanoid()} className="reviews__text">
-                          {comment}
-                        </p>
-                      ))}
-                      <time className="reviews__time" dateTime="2019-04-24">
-                        April 2019
-                      </time>
-                    </div>
-                  </li>
+                      <div className="reviews__info">
+                        <div className="reviews__rating rating">
+                          <div className="reviews__stars rating__stars">
+                            <span
+                              style={{ width: `${(review.rating / 5) * 100}%` }}
+                            />
+                            <span className="visually-hidden">Rating</span>
+                          </div>
+                        </div>
+                        <p className="reviews__text">{review.text}</p>
+                        <time className="reviews__time" dateTime={review.date}>
+                          April 2019
+                        </time>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
-                <CommentForm onSubmit={handleCommentSubmit} />
+                <CommentForm onAddReview={addReview} />
               </section>
             </div>
           </div>
