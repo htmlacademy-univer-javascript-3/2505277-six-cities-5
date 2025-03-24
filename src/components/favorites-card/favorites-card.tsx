@@ -1,30 +1,28 @@
-import { OffersData } from '../../types/offers';
-import { getRandomNum } from '../../utils/common';
+import { OfferData } from '../../types/offers';
+import { Link } from 'react-router-dom';
+
 type FavoritesProps = {
-  offer: OffersData;
+  offer: OfferData;
 };
+
 function FavoritesCard({ offer }: FavoritesProps): JSX.Element {
   return (
     <article className="favorites__card place-card">
-      {offer.isPremium ? (
+      {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
-      ) : null}
+      )}
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to="/offer/:id">
           <img
             className="place-card__image"
-            src={`img/${
-              offer.type === 'apartmanet'
-                ? `${offer.type}-small-0${getRandomNum(1, 3)}`
-                : `${offer.type}-small`
-            }.jpg`}
+            src={offer.previewImage}
             width="150"
             height="110"
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
@@ -44,12 +42,12 @@ function FavoritesCard({ offer }: FavoritesProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '100%' }}></span>
+            <span style={{ width: `${offer.rating * 20}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{offer.title}</a>
+          <Link to="/offer/:id">{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

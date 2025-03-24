@@ -1,4 +1,4 @@
-type OffersData = {
+type OfferData = {
   id: string;
   title: string;
   type: string;
@@ -20,4 +20,4 @@ type OffersCity = {
   location: LocationData;
 };
 
-export type { OffersData };
+export type { OfferData };

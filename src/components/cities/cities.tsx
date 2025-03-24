@@ -1,9 +1,9 @@
-import { Card } from '../card/card';
+import { Card } from '../card/Card';
 import { appendSForPlural } from '../../utils/common';
-import { OffersData } from '../../types/offers';
+import { OfferData } from '../../types/offers';
 
 type CitiesProps = {
-  offers: OffersData[];
+  offers: OfferData[];
 };
 
 function Cities({ offers }: CitiesProps): JSX.Element {

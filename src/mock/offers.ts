@@ -1,10 +1,8 @@
-import { OffersData } from '../types/offers';
-import { nanoid } from 'nanoid';
-import { getRandomNum } from '../utils/common';
+import { OfferData } from '../types/offers';
 
-const offers: OffersData[] = [
+const offers: OfferData[] = [
   {
-    id: nanoid(),
+    id: '1',
     title: 'Beautiful & luxurious studio at great location.',
     type: 'apartment',
     price: 120,
@@ -21,13 +19,13 @@ const offers: OffersData[] = [
       longitude: 4.673877537499948,
       zoom: 8,
     },
-    isFavorite: Boolean(getRandomNum(0, 1)),
-    isPremium: Boolean(getRandomNum(0, 1)),
+    isFavorite: true,
+    isPremium: false,
     rating: 4,
-    previewImage: 'https://url-to-image/image.png',
+    previewImage: 'https://picsum.photos/200/300',
   },
   {
-    id: nanoid(),
+    id: '2',
     title: 'Elegant & stylish loft in the vibrant center of City.',
     type: 'apartment',
     price: 130,
@@ -44,13 +42,13 @@ const offers: OffersData[] = [
       longitude: 4.351721,
       zoom: 9,
     },
-    isFavorite: Boolean(getRandomNum(0, 1)),
-    isPremium: Boolean(getRandomNum(0, 1)),
+    isFavorite: true,
+    isPremium: false,
     rating: 3,
-    previewImage: 'https://url-to-image/image.png',
+    previewImage: 'https://picsum.photos/200/300',
   },
   {
-    id: nanoid(),
+    id: '3',
     title: 'Cozy & enchanting flat in a prime City location.',
     type: 'apartment',
     price: 250,
@@ -67,13 +65,13 @@ const offers: OffersData[] = [
       longitude: 2.352222,
       zoom: 6,
     },
-    isFavorite: Boolean(getRandomNum(0, 1)),
-    isPremium: Boolean(getRandomNum(0, 1)),
+    isFavorite: false,
+    isPremium: true,
     rating: 5,
-    previewImage: 'https://url-to-image/image.png',
+    previewImage: 'https://picsum.photos/200/300',
   },
   {
-    id: nanoid(),
+    id: '4',
     title:
       'Charming & modern apartment in the heart of city with stunning views of the harbor.',
     type: 'room',
@@ -91,10 +89,10 @@ const offers: OffersData[] = [
       longitude: 9.993682,
       zoom: 5,
     },
-    isFavorite: Boolean(getRandomNum(0, 1)),
-    isPremium: Boolean(getRandomNum(0, 1)),
+    isFavorite: false,
+    isPremium: true,
     rating: 4,
-    previewImage: 'https://url-to-image/image.png',
+    previewImage: 'https://picsum.photos/200/300',
   },
 ];
 

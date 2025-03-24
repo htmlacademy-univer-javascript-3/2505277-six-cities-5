@@ -1,8 +1,8 @@
 import { Cities } from '../../components/cities/cities';
-import { OffersData } from '../../types/offers';
+import { OfferData } from '../../types/offers';
 
 type MainProps = {
-  offers: OffersData[];
+  offers: OfferData[];
 };
 
 function Main({ offers }: MainProps): JSX.Element {

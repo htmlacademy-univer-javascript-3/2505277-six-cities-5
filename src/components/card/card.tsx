@@ -1,22 +1,22 @@
 import { Link } from 'react-router-dom';
-import { OffersData } from '../../types/offers';
+import { OfferData } from '../../types/offers';
 import { getRandomNum } from '../../utils/common';
 import { AppRoute } from '../../const';
 
 type CardProps = {
-  offer: OffersData;
+  offer: OfferData;
 };
 function Card({ offer }: CardProps): JSX.Element {
   return (
     <article className="cities__card place-card">
-      {offer.isPremium ? (
+      {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
-      ) : null}
+      )}
 
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to="offer/:id">
           <img
             className="place-card__image"
             src={`img/${
@@ -28,7 +28,7 @@ function Card({ offer }: CardProps): JSX.Element {
             height="200"
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -37,11 +37,9 @@ function Card({ offer }: CardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={`${
-              offer.isFavorite
-                ? 'place-card__bookmark-button place-card__bookmark-button--active button'
-                : 'place-card__bookmark-button button'
-            }`}
+            className={`place-card__bookmark-button${
+              offer.isFavorite ? ' place-card__bookmark-button--active' : ''
+            } button`}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">

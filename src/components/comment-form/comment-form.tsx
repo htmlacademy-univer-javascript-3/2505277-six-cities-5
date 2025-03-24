@@ -7,8 +7,8 @@ function CommentForm({ onAddReview }: CommentFormProps): JSX.Element {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     if (!comment.trim()) {
       return;
@@ -21,7 +21,7 @@ function CommentForm({ onAddReview }: CommentFormProps): JSX.Element {
     });
 
     setComment('');
-    setRating(5);
+    setRating(0);
   };
 
   const isSubmitDisabled = comment.length > 50;
@@ -51,7 +51,7 @@ function CommentForm({ onAddReview }: CommentFormProps): JSX.Element {
               htmlFor={`${star}-stars`}
               className="reviews__rating-label form__rating-label"
               title={
-                ['terrible', 'bad', 'average', 'good', 'perfect'][star - 1]
+                ['terrible', 'badly', 'not bad', 'good', 'perfect'][star - 1]
               }
             >
               <svg className="form__star-image" width="37" height="33">
@@ -66,7 +66,7 @@ function CommentForm({ onAddReview }: CommentFormProps): JSX.Element {
         id="review"
         name="review"
         value={comment}
-        onChange={(evt) => setComment(evt.target.value)}
+        onChange={(event) => setComment(event.target.value)}
         placeholder="Tell how was your stay, what you like and what can be improved"
       />
       <div className="reviews__button-wrapper">
