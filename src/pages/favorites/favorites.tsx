@@ -5,10 +5,6 @@ type FavoritesProps = {
   offers: OfferData[];
 };
 function Favorites({ offers }: FavoritesProps): JSX.Element {
-  const spans: string[] = Array.from(
-    document.querySelectorAll('.locations__item-link span')
-  ).map((span) => span.textContent || '');
-
   return (
     <div className="page">
       <header className="header">
@@ -55,45 +51,11 @@ function Favorites({ offers }: FavoritesProps): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {offers
-                    .filter(
-                      (offer) =>
-                        offer.isFavorite && String(offer.city) === spans[0]
-                    )
-                    .map((offer) => (
-                      <FavoritesCard key={offer.id} offer={offer} />
-                    ))}
-                </div>
-              </li>
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {offers
-                    .filter(
-                      (offer) =>
-                        offer.isFavorite && String(offer.city) === spans[1]
-                    )
-                    .map((offer) => (
-                      <FavoritesCard key={offer.id} offer={offer} />
-                    ))}
-                </div>
-              </li>
+              {offers
+                .filter((offer) => offer.isFavorite)
+                .map((offer) => (
+                  <FavoritesCard key={offer.id} offer={offer} />
+                ))}
             </ul>
           </section>
         </div>
