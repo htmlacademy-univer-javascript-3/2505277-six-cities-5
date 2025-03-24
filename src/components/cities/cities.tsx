@@ -1,4 +1,4 @@
-import { Card } from '../card/Card';
+import { Card } from '../card/Card.tsx';
 import { appendSForPlural } from '../../utils/common';
 import { OfferData } from '../../types/offers';
 

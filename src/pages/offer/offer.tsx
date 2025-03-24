@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { CommentForm } from '../../components/comment-form/comment-form';
-import { nanoid } from 'nanoid';
 
 type OfferProps = {
   rating: number;
@@ -192,7 +191,7 @@ function Offer(): JSX.Element {
                 </h2>
                 <ul className="reviews__list">
                   {reviews.map((review) => (
-                    <li key={nanoid()} className="reviews__item">
+                    <li key={123} className="reviews__item">
                       <div className="reviews__user user">
                         <div className="reviews__avatar-wrapper user__avatar-wrapper">
                           <img
