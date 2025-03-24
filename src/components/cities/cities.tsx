@@ -9,7 +9,6 @@ type CitiesProps = {
 
 function Cities({ offers }: CitiesProps): JSX.Element {
   const [isHovered, setIsHovered] = useState(false);
- console.log(isHovered);
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -47,7 +46,7 @@ function Cities({ offers }: CitiesProps): JSX.Element {
             </ul>
           </form>
           <div className="cities__places-list places__list tabs__content">
-
+            {isHovered}
             {offers.map((offer) => (
               <Card
                 key={offer.id}
