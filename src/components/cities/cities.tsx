@@ -1,12 +1,14 @@
 import { Card } from '../card/сard';
 import { appendSForPlural } from '../../utils/common';
 import { OfferData } from '../../types/offers';
+import { useState } from 'react';
 
 type CitiesProps = {
   offers: OfferData[];
 };
 
 function Cities({ offers }: CitiesProps): JSX.Element {
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -44,8 +46,14 @@ function Cities({ offers }: CitiesProps): JSX.Element {
             </ul>
           </form>
           <div className="cities__places-list places__list tabs__content">
+         
             {offers.map((offer) => (
-              <Card key={offer.id} offer={offer} />
+              <Card
+                key={offer.id}
+                offer={offer}
+                onMouseLeave={() => setIsHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+              />
             ))}
           </div>
         </section>

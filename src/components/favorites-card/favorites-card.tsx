@@ -11,7 +11,7 @@ function FavoritesCard({ offer }: FavoritesProps): JSX.Element {
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
           <a className="locations__item-link" href="#">
-            <span>Amsterdam</span>
+            <span>{offer.city.name}</span>
           </a>
         </div>
       </div>
