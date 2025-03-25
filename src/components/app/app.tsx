@@ -6,19 +6,18 @@ import { NotFoundScreen } from '../../pages/not-found-screen/not-found-screen';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { PrivateRouteComponent } from '../private-route/private-route';
+import { OfferData } from '../../types/offers';
 
 type AppScreenProps = {
-  placesCount: number;
+  offers: OfferData[];
 };
 
-function App({ placesCount }: AppScreenProps): JSX.Element {
+function App({ offers }: AppScreenProps): JSX.Element {
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite === true);
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path={AppRoute.Main}
-          element={<Main placesCount={placesCount} />}
-        />
+        <Route path={AppRoute.Main} element={<Main offers={offers} />} />
         <Route path={AppRoute.Login} element={<Login />} />
         <Route
           path={AppRoute.Favorites}
@@ -26,7 +25,7 @@ function App({ placesCount }: AppScreenProps): JSX.Element {
             <PrivateRouteComponent
               authorizationStatus={AuthorizationStatus.NoAuth}
             >
-              <Favorites />
+              <Favorites offers={favoriteOffers} />
             </PrivateRouteComponent>
           }
         />
