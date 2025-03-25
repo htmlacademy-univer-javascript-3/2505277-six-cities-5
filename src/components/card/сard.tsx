@@ -6,15 +6,13 @@ import { AppRoute } from '../../const';
 type CardProps = {
   offer: OfferData;
   onMouseLeave?: (value: string) => void;
-  onMouseEnter?: (value: string) => void;
+  onMouseEnter?: () => void;
 };
 function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
   return (
     <article
       className="cities__card place-card"
-      onMouseEnter={() => {
-        onMouseEnter?.(offer.id);
-      }}
+      onMouseEnter={onMouseEnter}
       onMouseLeave={() => {
         onMouseLeave?.(offer.id);
       }}
