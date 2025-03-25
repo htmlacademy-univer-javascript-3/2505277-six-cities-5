@@ -5,7 +5,7 @@ import { AppRoute } from '../../const';
 
 type CardProps = {
   offer: OfferData;
-  onMouseLeave?: (value: string) => void;
+  onMouseLeave?: () => void;
   onMouseEnter?: () => void;
 };
 function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
@@ -13,9 +13,7 @@ function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
     <article
       className="cities__card place-card"
       onMouseEnter={onMouseEnter}
-      onMouseLeave={() => {
-        onMouseLeave?.(offer.id);
-      }}
+      onMouseLeave={onMouseLeave}
     >
       {offer.isPremium && (
         <div className="place-card__mark">
