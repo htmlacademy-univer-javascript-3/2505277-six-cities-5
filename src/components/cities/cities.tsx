@@ -51,7 +51,7 @@ function Cities({ offers }: CitiesProps): JSX.Element {
               <Card
                 key={offer.id}
                 offer={offer}
-                onMouseLeave={() => setIsHovered(offer.id)}
+                onMouseLeave={() => setIsHovered('')}
                 onMouseEnter={() => setIsHovered(offer.id)}
               />
             ))}
