@@ -24,7 +24,7 @@ function CommentForm({ onAddReview }: CommentFormProps): JSX.Element {
     setRating(0);
   };
 
-  const isSubmitDisabled = comment.length > 50;
+  const isSubmitDisabled = comment.length > 50 || rating === 0;
   return (
     <form
       className="reviews__form form"

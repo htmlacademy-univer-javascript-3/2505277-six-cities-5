@@ -8,7 +8,7 @@ type CitiesProps = {
 };
 
 function Cities({ offers }: CitiesProps): JSX.Element {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState('');
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -51,8 +51,8 @@ function Cities({ offers }: CitiesProps): JSX.Element {
               <Card
                 key={offer.id}
                 offer={offer}
-                onMouseLeave={() => setIsHovered(false)}
-                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(offer.id)}
+                onMouseEnter={() => setIsHovered(offer.id)}
               />
             ))}
           </div>
