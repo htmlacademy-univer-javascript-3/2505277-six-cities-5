@@ -9,14 +9,14 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
         zoom: 8,
       },
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 8,
     },
     isFavorite: true,
@@ -32,14 +32,14 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 50.850346,
-        longitude: 4.351721,
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
         zoom: 9,
       },
     },
     location: {
-      latitude: 50.850346,
-      longitude: 4.351721,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 9,
     },
     isFavorite: true,
@@ -55,14 +55,14 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 48.856613,
-        longitude: 2.352222,
+        latitude: 52.3909553943508,
+        longitude: 4.929309666406198,
         zoom: 6,
       },
     },
     location: {
-      latitude: 48.856613,
-      longitude: 2.352222,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
       zoom: 6,
     },
     isFavorite: false,
@@ -77,16 +77,16 @@ const offers: OfferData[] = [
     type: 'room',
     price: 100,
     city: {
-      name: 'Hamburg',
+      name: 'Amsterdam',
       location: {
-        latitude: 53.551086,
-        longitude: 9.993682,
+        latitude: 52.3909553943508,
+        longitude: 4.939309666406198,
         zoom: 5,
       },
     },
     location: {
-      latitude: 53.551086,
-      longitude: 9.993682,
+      latitude: 52.3909553943508,
+      longitude: 4.939309666406198,
       zoom: 5,
     },
     isFavorite: false,
