@@ -2,13 +2,15 @@ import { Card } from '../card/сard';
 import { appendSForPlural } from '../../utils/common';
 import { OfferData } from '../../types/offers';
 import { useState } from 'react';
+import { Map } from '../map/map';
 
 type CitiesProps = {
   offers: OfferData[];
 };
 
 function Cities({ offers }: CitiesProps): JSX.Element {
-  const [isHovered, setIsHovered] = useState('');
+  const [isHoveredID, setIsHoveredID] = useState('');
+
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -46,19 +48,22 @@ function Cities({ offers }: CitiesProps): JSX.Element {
             </ul>
           </form>
           <div className="cities__places-list places__list tabs__content">
-            {isHovered}
             {offers.map((offer) => (
               <Card
                 key={offer.id}
                 offer={offer}
-                onMouseLeave={() => setIsHovered('')}
-                onMouseEnter={() => setIsHovered(offer.id)}
+                onMouseLeave={() => setIsHoveredID('')}
+                onMouseEnter={() => setIsHoveredID(offer.id)}
               />
             ))}
           </div>
         </section>
         <div className="cities__right-section">
-          <section className="cities__map map"></section>
+          <Map
+            offers={offers}
+            cityLocation={offers[0].location}
+            isHoveredID={isHoveredID}
+          />
         </div>
       </div>
     </div>

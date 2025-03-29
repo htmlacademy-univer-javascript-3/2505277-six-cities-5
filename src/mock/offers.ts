@@ -1,4 +1,4 @@
-import { OfferData } from '../types/offers';
+import { LocationData, OfferData } from '../types/offers';
 
 const offers: OfferData[] = [
   {
@@ -9,14 +9,14 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
         zoom: 8,
       },
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 8,
     },
     isFavorite: true,
@@ -32,15 +32,15 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 50.850346,
-        longitude: 4.351721,
-        zoom: 9,
+        latitude: 52.3609553943508,
+        longitude: 4.85309666406198,
+        zoom: 8,
       },
     },
     location: {
-      latitude: 50.850346,
-      longitude: 4.351721,
-      zoom: 9,
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 8,
     },
     isFavorite: true,
     isPremium: false,
@@ -55,15 +55,15 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 48.856613,
-        longitude: 2.352222,
-        zoom: 6,
+        latitude: 52.3909553943508,
+        longitude: 4.929309666406198,
+        zoom: 8,
       },
     },
     location: {
-      latitude: 48.856613,
-      longitude: 2.352222,
-      zoom: 6,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 8,
     },
     isFavorite: false,
     isPremium: true,
@@ -77,17 +77,17 @@ const offers: OfferData[] = [
     type: 'room',
     price: 100,
     city: {
-      name: 'Hamburg',
+      name: 'Amsterdam',
       location: {
-        latitude: 53.551086,
-        longitude: 9.993682,
-        zoom: 5,
+        latitude: 52.3809553943508,
+        longitude: 4.939309666406198,
+        zoom: 8,
       },
     },
     location: {
-      latitude: 53.551086,
-      longitude: 9.993682,
-      zoom: 5,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 8,
     },
     isFavorite: false,
     isPremium: true,
@@ -95,5 +95,9 @@ const offers: OfferData[] = [
     previewImage: 'https://picsum.photos/200/300',
   },
 ];
-
-export { offers };
+const cityLocation: LocationData = {
+  latitude: 52.3909553943508,
+  longitude: 4.939309666406198,
+  zoom: 8,
+};
+export { offers, cityLocation };

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { OfferData } from '../../types/offers';
-import { getRandomNum } from '../../utils/common';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../const/routes';
 
 type CardProps = {
   offer: OfferData;
@@ -26,9 +25,7 @@ function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
           <img
             className="place-card__image"
             src={`img/${
-              offer.type === 'apartment'
-                ? `${offer.type}-0${getRandomNum(1, 3)}`
-                : `${offer.type}`
+              offer.type === 'apartment' ? `${offer.type}-02` : `${offer.type}`
             }.jpg`}
             width="260"
             height="200"
