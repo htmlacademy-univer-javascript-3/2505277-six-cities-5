@@ -1,4 +1,4 @@
-import { OfferData } from '../types/offers';
+import { LocationData, OfferData } from '../types/offers';
 
 const offers: OfferData[] = [
   {
@@ -32,15 +32,15 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.3909553943508,
+        latitude: 52.3609553943508,
         longitude: 4.85309666406198,
-        zoom: 9,
+        zoom: 8,
       },
     },
     location: {
-      latitude: 52.3909553943508,
+      latitude: 52.3609553943508,
       longitude: 4.85309666406198,
-      zoom: 9,
+      zoom: 8,
     },
     isFavorite: true,
     isPremium: false,
@@ -57,13 +57,13 @@ const offers: OfferData[] = [
       location: {
         latitude: 52.3909553943508,
         longitude: 4.929309666406198,
-        zoom: 6,
+        zoom: 8,
       },
     },
     location: {
       latitude: 52.3909553943508,
       longitude: 4.929309666406198,
-      zoom: 6,
+      zoom: 8,
     },
     isFavorite: false,
     isPremium: true,
@@ -79,15 +79,15 @@ const offers: OfferData[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 52.3909553943508,
+        latitude: 52.3809553943508,
         longitude: 4.939309666406198,
-        zoom: 5,
+        zoom: 8,
       },
     },
     location: {
-      latitude: 52.3909553943508,
+      latitude: 52.3809553943508,
       longitude: 4.939309666406198,
-      zoom: 5,
+      zoom: 8,
     },
     isFavorite: false,
     isPremium: true,
@@ -95,5 +95,9 @@ const offers: OfferData[] = [
     previewImage: 'https://picsum.photos/200/300',
   },
 ];
-
-export { offers };
+const cityLocation: LocationData = {
+  latitude: 52.3909553943508,
+  longitude: 4.939309666406198,
+  zoom: 8,
+};
+export { offers, cityLocation };

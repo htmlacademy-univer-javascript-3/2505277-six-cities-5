@@ -14,6 +14,7 @@ type AppScreenProps = {
 
 function App({ offers }: AppScreenProps): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite === true);
+
   return (
     <BrowserRouter>
       <Routes>

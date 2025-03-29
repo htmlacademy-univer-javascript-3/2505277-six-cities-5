@@ -20,4 +20,4 @@ type OffersCity = {
   location: LocationData;
 };
 
-export type { OfferData };
+export type { OfferData, LocationData };
