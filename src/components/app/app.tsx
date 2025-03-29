@@ -4,7 +4,8 @@ import { Favorites } from '../../pages/favorites/favorites';
 import { Offer } from '../../pages/offer/offer';
 import { NotFoundScreen } from '../../pages/not-found-screen/not-found-screen';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AuthorizationStatus } from '../../const/auth';
+import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
 import { OfferData } from '../../types/offers';
 
