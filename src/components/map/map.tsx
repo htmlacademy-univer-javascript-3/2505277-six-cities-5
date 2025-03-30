@@ -6,9 +6,9 @@ import leaflet from 'leaflet';
 type MapProps = {
   cityLocation: LocationData;
   offers: OfferData[];
-  isHoveredID: string;
+  hoveredID: string;
 };
-function Map({ cityLocation, offers, isHoveredID }: MapProps): JSX.Element {
+function Map({ cityLocation, offers, hoveredID }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement>(null);
 
   const map = useMap(mapRef, cityLocation);
@@ -24,13 +24,13 @@ function Map({ cityLocation, offers, isHoveredID }: MapProps): JSX.Element {
             },
             {
               icon:
-                offer.id === isHoveredID ? activeCustomIcon : defaulCustomIcon,
+                offer.id === hoveredID ? activeCustomIcon : defaulCustomIcon,
             }
           )
           .addTo(map);
       });
     }
-  }, [map, offers, isHoveredID]);
+  }, [map, offers, hoveredID]);
   return <div style={{ height: '794px', width: '500px' }} ref={mapRef}></div>;
 }
 export { Map };
