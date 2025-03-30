@@ -8,12 +8,15 @@ import { AuthorizationStatus } from '../../const/auth';
 import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
 import { OfferData } from '../../types/offers';
-
+import { MapProps } from '../map/map';
 type AppScreenProps = {
   offers: OfferData[];
 };
 
-function App({ offers }: AppScreenProps): JSX.Element {
+function App(
+  { offers }: AppScreenProps,
+  { hoveredID, cityLocation }: MapProps
+): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite === true);
 
   return (
@@ -31,7 +34,19 @@ function App({ offers }: AppScreenProps): JSX.Element {
             </PrivateRouteComponent>
           }
         />
-        <Route path={AppRoute.Offer} element={<Offer />} />
+        <Route
+          path={AppRoute.Offer}
+          element={
+            <Offer
+              offers={offers}
+              hoveredID={hoveredID}
+              cityLocation={cityLocation}
+              height=""
+              width=""
+              marginBottom=""
+            />
+          }
+        />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>
     </BrowserRouter>

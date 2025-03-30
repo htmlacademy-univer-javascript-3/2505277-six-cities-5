@@ -54,6 +54,7 @@ function Cities({ offers }: CitiesProps): JSX.Element {
                 offer={offer}
                 onMouseLeave={() => setHoveredID('')}
                 onMouseEnter={() => setHoveredID(offer.id)}
+                customClass="cities"
               />
             ))}
           </div>
@@ -63,6 +64,9 @@ function Cities({ offers }: CitiesProps): JSX.Element {
             offers={offers}
             cityLocation={offers[0].location}
             hoveredID={hoveredID}
+            height="794px"
+            width="500px"
+            marginBottom="0px"
           />
         </div>
       </div>
