@@ -142,7 +142,8 @@ function Offer({ offers }: MapProps): JSX.Element {
                           : 20 * 3
                       }%`,
                     }}
-                  ></span>
+                  >
+                  </span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">
