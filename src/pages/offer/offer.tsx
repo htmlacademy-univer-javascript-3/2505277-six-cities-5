@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { ReviewsList } from '../../components/reviews-list/reviews-list';
 import { MapProps } from '../../components/map/map';
 import { Map } from '../../components/map/map';
 import { Card } from '../../components/card/сard';
+import { OfferData } from '../../types/offers';
+
 type OfferProps = {
   rating: number;
   text: string;
@@ -18,6 +21,14 @@ function Offer({ offers }: MapProps): JSX.Element {
   const addReview = (newReview: OfferProps) => {
     setReviews([...reviews, newReview]);
   };
+  const { id } = useParams();
+  const selectedOffer: OfferData | undefined = offers.find(
+    (offer) => offer.id === id
+  );
+
+  const filteredOffer = offers.filter(
+    (offer) => offer.id !== selectedOffer?.id
+  );
   return (
     <div className="page">
       <header className="header">
@@ -110,12 +121,10 @@ function Offer({ offers }: MapProps): JSX.Element {
           <div className="offer__container container">
             <div className="offer__wrapper">
               <div className="offer__mark">
-                <span>Premium</span>
+                <span>{selectedOffer?.isPremium}</span>
               </div>
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">
-                  Beautiful &amp; luxurious studio at great location
-                </h1>
+                <h1 className="offer__name">{selectedOffer?.title}</h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -125,10 +134,20 @@ function Offer({ offers }: MapProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: '80%' }}></span>
+                  <span
+                    style={{
+                      width: `${
+                        selectedOffer?.rating
+                          ? selectedOffer?.rating * 20
+                          : 20 * 3
+                      }%`,
+                    }}
+                  ></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">
+                  {selectedOffer?.rating}
+                </span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
@@ -142,7 +161,9 @@ function Offer({ offers }: MapProps): JSX.Element {
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;120</b>
+                <b className="offer__price-value">
+                  &euro; {selectedOffer?.price}
+                </b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
@@ -199,7 +220,7 @@ function Offer({ offers }: MapProps): JSX.Element {
             </div>
           </div>
           <Map
-            offers={offers.slice(1)}
+            offers={filteredOffer}
             cityLocation={offers[0].location}
             hoveredID={hoveredOfferID}
             height="579px"
@@ -213,7 +234,7 @@ function Offer({ offers }: MapProps): JSX.Element {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              {offers.slice(1).map((offer) => (
+              {filteredOffer.map((offer) => (
                 <Card
                   key={offer.id}
                   offer={offer}

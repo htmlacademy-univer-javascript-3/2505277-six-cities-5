@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
 import { OfferData } from '../../types/offers';
-import { AppRoute } from '../../const/routes';
 
 type CardProps = {
   offer: OfferData;
   onMouseLeave?: () => void;
   onMouseEnter?: () => void;
+
   customClass?: string;
 };
 function Card({
   offer,
   onMouseEnter,
   onMouseLeave,
+
   customClass,
 }: CardProps): JSX.Element {
   return (
@@ -66,11 +67,11 @@ function Card({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={AppRoute.Offer}>{offer.title}</Link>
+          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
 }
-export { Card };
+export { Card, type CardProps };
