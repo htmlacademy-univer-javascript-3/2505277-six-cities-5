@@ -2,24 +2,40 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { ReviewsList } from '../../components/reviews-list/reviews-list';
-import { MapProps } from '../../components/map/map';
+
 import { Map } from '../../components/map/map';
 import { Card } from '../../components/card/сard';
 import { OfferData } from '../../types/offers';
-
+import { names } from '../../mock/names';
+import { getRandomNum } from '../../utils/common';
 type OfferProps = {
   rating: number;
   text: string;
   date: string;
+  id: string;
+  name: string;
 };
-
-function Offer({ offers }: MapProps): JSX.Element {
+type OfferListProps = {
+  offers: OfferData[];
+};
+function Offer({ offers }: OfferListProps): JSX.Element {
   const [reviews, setReviews] = useState<OfferProps[]>([
-    { rating: 4, text: 'Great place to stay!', date: '2024-03-22' },
+    {
+      rating: 4,
+      text: 'Great place to stay!',
+      date: '2024-03-22',
+      id: '1',
+      name: names[getRandomNum(0, 7)],
+    },
   ]);
   const [hoveredOfferID, setHoveredOfferID] = useState('');
   const addReview = (newReview: OfferProps) => {
-    setReviews([...reviews, newReview]);
+    const reviewWithId = {
+      ...newReview,
+      id: Date.now().toString(),
+      name: names[getRandomNum(0, 7)],
+    };
+    setReviews([...reviews, reviewWithId]);
   };
   const { id } = useParams();
   const selectedOffer: OfferData | undefined = offers.find(
@@ -142,8 +158,7 @@ function Offer({ offers }: MapProps): JSX.Element {
                           : 20 * 3
                       }%`,
                     }}
-                  >
-                  </span>
+                  ></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">
@@ -241,7 +256,7 @@ function Offer({ offers }: MapProps): JSX.Element {
                   offer={offer}
                   onMouseLeave={() => setHoveredOfferID('')}
                   onMouseEnter={() => setHoveredOfferID(offer.id)}
-                  customClass="near-places"
+                  classPrefix="near-places"
                 />
               ))}
             </div>
@@ -252,4 +267,4 @@ function Offer({ offers }: MapProps): JSX.Element {
   );
 }
 
-export { Offer, type OfferProps };
+export { Offer };

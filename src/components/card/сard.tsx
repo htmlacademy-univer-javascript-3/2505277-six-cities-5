@@ -5,19 +5,17 @@ type CardProps = {
   offer: OfferData;
   onMouseLeave?: () => void;
   onMouseEnter?: () => void;
-
-  customClass?: string;
+  classPrefix?: string;
 };
 function Card({
   offer,
   onMouseEnter,
   onMouseLeave,
-
-  customClass,
+  classPrefix,
 }: CardProps): JSX.Element {
   return (
     <article
-      className={`${customClass}__card place-card`}
+      className={`${classPrefix}__card place-card`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -28,7 +26,7 @@ function Card({
       )}
 
       <div
-        className={`${customClass}__image-wrapper place-card__image-wrapper`}
+        className={`${classPrefix}__image-wrapper place-card__image-wrapper`}
       >
         <Link to="offer/:id">
           <img

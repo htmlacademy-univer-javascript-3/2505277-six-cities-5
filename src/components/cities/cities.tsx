@@ -54,7 +54,7 @@ function Cities({ offers }: CitiesProps): JSX.Element {
                 offer={offer}
                 onMouseLeave={() => setHoveredID('')}
                 onMouseEnter={() => setHoveredID(offer.id)}
-                customClass="cities"
+                classPrefix="cities"
               />
             ))}
           </div>
