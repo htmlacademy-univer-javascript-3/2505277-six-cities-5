@@ -29,7 +29,7 @@ function Offer({ offers }: OfferListProps): JSX.Element {
     },
   ]);
   const [hoveredOfferID, setHoveredOfferID] = useState('');
-  const addReview = (newReview: OfferProps) => {
+  const addReview = (newReview:Omit<OfferProps, 'id' | 'name'>) => {
     const reviewWithId = {
       ...newReview,
       id: Date.now().toString(),
@@ -158,7 +158,8 @@ function Offer({ offers }: OfferListProps): JSX.Element {
                           : 20 * 3
                       }%`,
                     }}
-                  ></span>
+                  >
+                  </span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">
