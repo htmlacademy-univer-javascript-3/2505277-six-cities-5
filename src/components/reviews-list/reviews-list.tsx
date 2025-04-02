@@ -1,15 +1,8 @@
 import { ReviewsItem } from '../reviews-item/reviews-item';
-
-type ReviewsProps = {
-  rating: number;
-  text: string;
-  date: string;
-  id: string;
-  name:string;
-};
+import { ReviewItem } from '../../types/offers';
 
 type ReviewsListProps = {
-  reviews: ReviewsProps[];
+  reviews: ReviewItem[];
 };
 
 function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {

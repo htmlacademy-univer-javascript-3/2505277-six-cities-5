@@ -20,4 +20,11 @@ type OffersCity = {
   location: LocationData;
 };
 
-export type { OfferData, LocationData };
+type ReviewItem ={
+  rating: number;
+  text: string;
+  date: string;
+  id: string;
+  name: string;
+}
+export type { OfferData, LocationData,ReviewItem };

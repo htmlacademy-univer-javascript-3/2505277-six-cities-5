@@ -1,20 +1,11 @@
-import { monthNames } from '../../const/date';
-
-type ReviewsProps = {
-  rating: number;
-  text: string;
-  date: string;
-  id: string;
-  name: string;
-};
+import { ReviewItem } from '../../types/offers';
+import { getFormatDate } from '../../const/date';
 
 type ReviewsItemProps = {
-  review: ReviewsProps;
+  review: ReviewItem;
 };
 
 function ReviewsItem({ review }: ReviewsItemProps): JSX.Element {
-  const reviewByMonth = new Date(review.date).getMonth();
-  const reviewByYear = new Date(review.date).getFullYear().toString().slice(2);
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -40,7 +31,7 @@ function ReviewsItem({ review }: ReviewsItemProps): JSX.Element {
         </div>
         <p className="reviews__text">{review.text}</p>
         <time className="reviews__time" dateTime={review.date}>
-          {`${monthNames[reviewByMonth]} ${reviewByYear}`}
+          {getFormatDate(review.date)}
         </time>
       </div>
     </li>
