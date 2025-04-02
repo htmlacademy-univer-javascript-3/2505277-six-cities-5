@@ -9,6 +9,7 @@ import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
 import { OfferData } from '../../types/offers';
 
+
 type AppScreenProps = {
   offers: OfferData[];
 };
