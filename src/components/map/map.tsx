@@ -3,12 +3,23 @@ import { useEffect, useRef } from 'react';
 import { LocationData, OfferData } from '../../types/offers';
 import { defaulCustomIcon, activeCustomIcon } from '../../const/map';
 import leaflet from 'leaflet';
+
 type MapProps = {
   cityLocation: LocationData;
   offers: OfferData[];
-  isHoveredID: string;
+  hoveredID: string;
+  height: string;
+  width: string;
+  marginBottom: string;
 };
-function Map({ cityLocation, offers, isHoveredID }: MapProps): JSX.Element {
+function Map({
+  height = '794px',
+  width = '500px',
+  cityLocation,
+  offers,
+  hoveredID,
+  marginBottom = '',
+}: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement>(null);
 
   const map = useMap(mapRef, cityLocation);
@@ -24,13 +35,19 @@ function Map({ cityLocation, offers, isHoveredID }: MapProps): JSX.Element {
             },
             {
               icon:
-                offer.id === isHoveredID ? activeCustomIcon : defaulCustomIcon,
+                offer.id === hoveredID ? activeCustomIcon : defaulCustomIcon,
             }
           )
           .addTo(map);
       });
     }
-  }, [map, offers, isHoveredID]);
-  return <div style={{ height: '794px', width: '500px' }} ref={mapRef}></div>;
+  }, [map, offers, hoveredID]);
+  return (
+    <div
+      style={{ height, width, margin: 'auto', marginBottom }}
+      ref={mapRef}
+    >
+    </div>
+  );
 }
-export { Map };
+export { Map, type MapProps };

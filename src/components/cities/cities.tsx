@@ -9,7 +9,7 @@ type CitiesProps = {
 };
 
 function Cities({ offers }: CitiesProps): JSX.Element {
-  const [isHoveredID, setIsHoveredID] = useState('');
+  const [hoveredID, setHoveredID] = useState('');
 
   return (
     <div className="cities">
@@ -52,8 +52,9 @@ function Cities({ offers }: CitiesProps): JSX.Element {
               <Card
                 key={offer.id}
                 offer={offer}
-                onMouseLeave={() => setIsHoveredID('')}
-                onMouseEnter={() => setIsHoveredID(offer.id)}
+                onMouseLeave={() => setHoveredID('')}
+                onMouseEnter={() => setHoveredID(offer.id)}
+                classPrefix="cities"
               />
             ))}
           </div>
@@ -62,7 +63,10 @@ function Cities({ offers }: CitiesProps): JSX.Element {
           <Map
             offers={offers}
             cityLocation={offers[0].location}
-            isHoveredID={isHoveredID}
+            hoveredID={hoveredID}
+            height="794px"
+            width="500px"
+            marginBottom="0px"
           />
         </div>
       </div>

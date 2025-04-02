@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
 import { OfferData } from '../../types/offers';
-import { AppRoute } from '../../const/routes';
 
 type CardProps = {
   offer: OfferData;
   onMouseLeave?: () => void;
   onMouseEnter?: () => void;
+  classPrefix?: string;
 };
-function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
+function Card({
+  offer,
+  onMouseEnter,
+  onMouseLeave,
+  classPrefix,
+}: CardProps): JSX.Element {
   return (
     <article
-      className="cities__card place-card"
+      className={`${classPrefix}__card place-card`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -20,7 +25,9 @@ function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
         </div>
       )}
 
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div
+        className={`${classPrefix}__image-wrapper place-card__image-wrapper`}
+      >
         <Link to="offer/:id">
           <img
             className="place-card__image"
@@ -58,11 +65,11 @@ function Card({ offer, onMouseEnter, onMouseLeave }: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={AppRoute.Offer}>{offer.title}</Link>
+          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
 }
-export { Card };
+export { Card, type CardProps };

@@ -31,7 +31,7 @@ function App({ offers }: AppScreenProps): JSX.Element {
             </PrivateRouteComponent>
           }
         />
-        <Route path={AppRoute.Offer} element={<Offer />} />
+        <Route path={AppRoute.Offer} element={<Offer offers={offers} />} />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>
     </BrowserRouter>
