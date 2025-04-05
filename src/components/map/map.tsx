@@ -3,45 +3,64 @@ import { useEffect, useRef } from 'react';
 import { LocationData, OfferData } from '../../types/offers';
 import { defaulCustomIcon, activeCustomIcon } from '../../const/map';
 import leaflet from 'leaflet';
+import { useAppSelector } from '../../hooks';
 
 type MapProps = {
+  filteredOfferById?:OfferData[];
   cityLocation: LocationData;
-  offers: OfferData[];
   hoveredID: string;
   height: string;
   width: string;
   marginBottom: string;
 };
 function Map({
+  filteredOfferById,
   height = '794px',
   width = '500px',
   cityLocation,
-  offers,
   hoveredID,
   marginBottom = '',
 }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement>(null);
-
   const map = useMap(mapRef, cityLocation);
-
+  const offers = useAppSelector((state) => state.offersList);
   useEffect(() => {
-    if (map) {
-      offers.forEach((offer) => {
-        leaflet
-          .marker(
-            {
-              lat: offer.location.latitude,
-              lng: offer.location.longitude,
-            },
-            {
-              icon:
-                offer.id === hoveredID ? activeCustomIcon : defaulCustomIcon,
-            }
-          )
-          .addTo(map);
-      });
+    if (!map) {
+      return;
     }
-  }, [map, offers, hoveredID]);
+    const markers = leaflet.layerGroup();
+    const dataToRender = filteredOfferById?.length ? filteredOfferById : offers;
+
+    dataToRender.forEach((offer) => {
+      leaflet
+        .marker(
+          {
+            lat: offer.location.latitude,
+            lng: offer.location.longitude,
+          },
+          {
+            icon: offer.id === hoveredID ? activeCustomIcon : defaulCustomIcon,
+          }
+        )
+        .addTo(markers);
+    });
+
+    markers.addTo(map);
+
+    return () => {
+      markers.clearLayers();
+      map.removeLayer(markers);
+    };
+  }, [map,filteredOfferById, offers, hoveredID]);
+
+  useEffect(()=>{
+    if(map){
+      map.setView(
+        [offers[0].location.latitude, offers[0].location.longitude],
+        offers[0].location.zoom
+      );
+    }
+  },[map,offers]);
   return (
     <div
       style={{ height, width, margin: 'auto', marginBottom }}
