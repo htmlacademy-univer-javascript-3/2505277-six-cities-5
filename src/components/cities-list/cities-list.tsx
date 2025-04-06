@@ -4,13 +4,20 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCity } from '../../store/action';
 import { OfferData } from '../../types/offers';
 import { fillingOfferList } from '../../store/action';
+import { useEffect } from 'react';
+
 type CitiesListProps = {
   offers: OfferData[];
 };
-function CitiesListComponent({ offers }: CitiesListProps): JSX.Element {
+function CitiesList({ offers }: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
   const currentCity = useAppSelector((state) => state.city);
-
+  useEffect(()=>{
+    const offersFiltered = offers.filter(
+      (offer) => offer.city.name === currentCity
+    );
+    dispatch(fillingOfferList(offersFiltered));
+  },[offers, currentCity, dispatch]);
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
@@ -20,10 +27,6 @@ function CitiesListComponent({ offers }: CitiesListProps): JSX.Element {
             city={cities[city]}
             onClick={() => {
               dispatch(changeCity(city));
-              const offersFiltered = offers.filter(
-                (offer) => offer.city.name === city
-              );
-              dispatch(fillingOfferList(offersFiltered));
             }}
             activeClass={city === currentCity ? 'tabs__item--active' : null}
           />
@@ -32,4 +35,4 @@ function CitiesListComponent({ offers }: CitiesListProps): JSX.Element {
     </section>
   );
 }
-export { CitiesListComponent };
+export { CitiesList };

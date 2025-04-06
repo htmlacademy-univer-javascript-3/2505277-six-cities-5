@@ -1,6 +1,6 @@
 import { Cities } from '../../components/cities/cities';
 import { OfferData } from '../../types/offers';
-import { CitiesListComponent } from '../../components/cities-list/cities-list';
+import { CitiesList } from '../../components/cities-list/cities-list';
 
 type MainProps = {
   offers: OfferData[];
@@ -51,7 +51,7 @@ function Main({ offers }: MainProps): JSX.Element {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <CitiesListComponent offers={offers} />
+          <CitiesList offers={offers} />
         </div>
         <Cities />
       </main>

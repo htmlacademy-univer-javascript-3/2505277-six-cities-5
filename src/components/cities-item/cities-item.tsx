@@ -1,10 +1,10 @@
-type City = {
+type CitiesItemProps = {
   city: string;
   onClick?: () => void;
   activeClass: string | null;
 };
 
-function CitiesItem({ city, onClick, activeClass }: City): JSX.Element {
+function CitiesItem({ city, onClick, activeClass }: CitiesItemProps): JSX.Element {
   return (
     <li className="locations__item">
       <a

@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks';
 
 function Favorites(): JSX.Element {
   const offers = useAppSelector((state)=>state.offersList);
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite === true);
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">
       <header className="header">

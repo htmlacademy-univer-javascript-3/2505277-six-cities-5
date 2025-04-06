@@ -44,7 +44,7 @@ function Offer(): JSX.Element {
     (offer) => offer.id === id
   );
 
-  const filteredOfferById = offers.filter(
+  const nearestOffers = offers.filter(
     (offer) => offer.id !== selectedOffer?.id
   );
   return (
@@ -240,7 +240,7 @@ function Offer(): JSX.Element {
             </div>
           </div>
           <Map
-            filteredOfferById={filteredOfferById}
+            nearestOffers ={nearestOffers }
             cityLocation={offers[0].location}
             hoveredID={hoveredOfferID}
             height="579px"
@@ -254,7 +254,7 @@ function Offer(): JSX.Element {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              {filteredOfferById.map((offer) => (
+              {nearestOffers.map((offer) => (
                 <Card
                   key={offer.id}
                   offer={offer}

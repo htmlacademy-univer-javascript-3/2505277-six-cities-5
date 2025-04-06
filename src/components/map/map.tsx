@@ -6,7 +6,7 @@ import leaflet from 'leaflet';
 import { useAppSelector } from '../../hooks';
 
 type MapProps = {
-  filteredOfferById?:OfferData[];
+  nearestOffers ?:OfferData[];
   cityLocation: LocationData;
   hoveredID: string;
   height: string;
@@ -14,7 +14,7 @@ type MapProps = {
   marginBottom: string;
 };
 function Map({
-  filteredOfferById,
+  nearestOffers ,
   height = '794px',
   width = '500px',
   cityLocation,
@@ -29,7 +29,7 @@ function Map({
       return;
     }
     const markers = leaflet.layerGroup();
-    const dataToRender = filteredOfferById?.length ? filteredOfferById : offers;
+    const dataToRender = nearestOffers ?.length ? nearestOffers : offers;
 
     dataToRender.forEach((offer) => {
       leaflet
@@ -51,7 +51,7 @@ function Map({
       markers.clearLayers();
       map.removeLayer(markers);
     };
-  }, [map,filteredOfferById, offers, hoveredID]);
+  }, [map,nearestOffers , offers, hoveredID]);
 
   useEffect(()=>{
     if(map){
