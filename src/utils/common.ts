@@ -9,13 +9,15 @@ function getRandomNum(min: number, max: number) {
 }
 function sortingByType(type: string, offersFiltered: OfferData[]) {
   const sorted = [...offersFiltered];
-  if (type === 'Price: low to high') {
-    return sorted.sort((a: OfferData, b: OfferData) => a.price - b.price);
-  } else if (type === 'Price: high to low') {
-    return sorted.sort((a: OfferData, b: OfferData) => b.price - a.price);
-  } else if (type === 'Top rated first') {
-    return sorted.sort((a: OfferData, b: OfferData) => b.rating - a.rating);
-  }
-  return offersFiltered;
+  const sortMap: Record<string, () => OfferData[]> = {
+    'Price: low to high': () =>
+      sorted.sort((a: OfferData, b: OfferData) => a.price - b.price),
+    'Price: high to low': () =>
+      sorted.sort((a: OfferData, b: OfferData) => b.price - a.price),
+    'Top rated first': () =>
+      sorted.sort((a: OfferData, b: OfferData) => b.rating - a.rating),
+  };
+  return sortMap[type]?.() ?? offersFiltered;
 }
+
 export { appendSForPlural, getRandomNum, sortingByType };
