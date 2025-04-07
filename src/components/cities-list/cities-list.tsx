@@ -5,19 +5,24 @@ import { changeCity } from '../../store/action';
 import { OfferData } from '../../types/offers';
 import { fillingOfferList } from '../../store/action';
 import { useEffect } from 'react';
+import { sortingByType } from '../../utils/common';
 
 type CitiesListProps = {
   offers: OfferData[];
 };
+
 function CitiesList({ offers }: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
   const currentCity = useAppSelector((state) => state.city);
-  useEffect(()=>{
-    const offersFiltered = offers.filter(
+  const sortingType = useAppSelector((state) => state.sortingBy);
+
+  useEffect(() => {
+    let offersFiltered = offers.filter(
       (offer) => offer.city.name === currentCity
     );
+    offersFiltered = sortingByType(sortingType, offersFiltered);
     dispatch(fillingOfferList(offersFiltered));
-  },[offers, currentCity, dispatch]);
+  }, [offers, currentCity, dispatch, sortingType]);
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
