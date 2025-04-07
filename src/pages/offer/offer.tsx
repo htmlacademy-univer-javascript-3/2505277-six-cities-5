@@ -8,6 +8,7 @@ import { Card } from '../../components/card/сard';
 import { OfferData } from '../../types/offers';
 import { names } from '../../mock/names';
 import { getRandomNum } from '../../utils/common';
+import { useAppSelector } from '../../hooks';
 type OfferProps = {
   rating: number;
   text: string;
@@ -15,10 +16,8 @@ type OfferProps = {
   id: string;
   name: string;
 };
-type OfferListProps = {
-  offers: OfferData[];
-};
-function Offer({ offers }: OfferListProps): JSX.Element {
+
+function Offer(): JSX.Element {
   const [reviews, setReviews] = useState<OfferProps[]>([
     {
       rating: 4,
@@ -28,8 +27,9 @@ function Offer({ offers }: OfferListProps): JSX.Element {
       name: names[getRandomNum(0, 7)],
     },
   ]);
+  const offers = useAppSelector((state)=>state.offersList);
   const [hoveredOfferID, setHoveredOfferID] = useState('');
-  const addReview = (newReview:Omit<OfferProps, 'id' | 'name'>) => {
+  const addReview = (newReview: Omit<OfferProps, 'id' | 'name'>) => {
     const reviewWithId = {
       ...newReview,
       id: Date.now().toString(),
@@ -37,12 +37,14 @@ function Offer({ offers }: OfferListProps): JSX.Element {
     };
     setReviews([...reviews, reviewWithId]);
   };
+
+
   const { id } = useParams();
   const selectedOffer: OfferData | undefined = offers.find(
     (offer) => offer.id === id
   );
 
-  const filteredOffer = offers.filter(
+  const nearestOffers = offers.filter(
     (offer) => offer.id !== selectedOffer?.id
   );
   return (
@@ -159,6 +161,7 @@ function Offer({ offers }: OfferListProps): JSX.Element {
                       }%`,
                     }}
                   >
+
                   </span>
                   <span className="visually-hidden">Rating</span>
                 </div>
@@ -237,7 +240,7 @@ function Offer({ offers }: OfferListProps): JSX.Element {
             </div>
           </div>
           <Map
-            offers={filteredOffer}
+            nearestOffers ={nearestOffers }
             cityLocation={offers[0].location}
             hoveredID={hoveredOfferID}
             height="579px"
@@ -251,7 +254,7 @@ function Offer({ offers }: OfferListProps): JSX.Element {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              {filteredOffer.map((offer) => (
+              {nearestOffers.map((offer) => (
                 <Card
                   key={offer.id}
                   offer={offer}

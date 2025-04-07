@@ -9,12 +9,12 @@ import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
 import { OfferData } from '../../types/offers';
 
+
 type AppScreenProps = {
   offers: OfferData[];
 };
 
 function App({ offers }: AppScreenProps): JSX.Element {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite === true);
 
   return (
     <BrowserRouter>
@@ -27,11 +27,11 @@ function App({ offers }: AppScreenProps): JSX.Element {
             <PrivateRouteComponent
               authorizationStatus={AuthorizationStatus.NoAuth}
             >
-              <Favorites offers={favoriteOffers} />
+              <Favorites />
             </PrivateRouteComponent>
           }
         />
-        <Route path={AppRoute.Offer} element={<Offer offers={offers} />} />
+        <Route path={AppRoute.Offer} element={<Offer />} />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>
     </BrowserRouter>

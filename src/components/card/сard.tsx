@@ -13,11 +13,15 @@ function Card({
   onMouseLeave,
   classPrefix,
 }: CardProps): JSX.Element {
+  const handleClick = ()=>{
+    window.scrollTo(0, 0);
+  };
   return (
     <article
       className={`${classPrefix}__card place-card`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={handleClick}
     >
       {offer.isPremium && (
         <div className="place-card__mark">

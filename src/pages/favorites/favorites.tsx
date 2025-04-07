@@ -1,10 +1,9 @@
 import { FavoritesCard } from '../../components/favorites-card/favorites-card';
-import { OfferData } from '../../types/offers';
+import { useAppSelector } from '../../hooks';
 
-type FavoritesProps = {
-  offers: OfferData[];
-};
-function Favorites({ offers }: FavoritesProps): JSX.Element {
+function Favorites(): JSX.Element {
+  const offers = useAppSelector((state)=>state.offersList);
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">
       <header className="header">
@@ -51,7 +50,7 @@ function Favorites({ offers }: FavoritesProps): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {offers
+              {favoriteOffers
                 .filter((offer) => offer.isFavorite)
                 .map((offer) => (
                   <FavoritesCard key={offer.id} offer={offer} />

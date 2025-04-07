@@ -1,16 +1,14 @@
 import { Card } from '../card/сard';
 import { appendSForPlural } from '../../utils/common';
-import { OfferData } from '../../types/offers';
+
 import { useState } from 'react';
 import { Map } from '../map/map';
+import { useAppSelector } from '../../hooks';
 
-type CitiesProps = {
-  offers: OfferData[];
-};
-
-function Cities({ offers }: CitiesProps): JSX.Element {
+function Cities(): JSX.Element {
   const [hoveredID, setHoveredID] = useState('');
-
+  const city = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offersList);
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -18,8 +16,8 @@ function Cities({ offers }: CitiesProps): JSX.Element {
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
             {' '}
-            {offers.length} place{appendSForPlural(offers.length)} to stay in
-            Amsterdam
+            {offers.length} place{appendSForPlural(offers.length)} to stay in{' '}
+            {city}
           </b>
           <form className="places__sorting" action="#" method="get">
             <span className="places__sorting-caption">Sort by</span>
@@ -61,7 +59,6 @@ function Cities({ offers }: CitiesProps): JSX.Element {
         </section>
         <div className="cities__right-section">
           <Map
-            offers={offers}
             cityLocation={offers[0].location}
             hoveredID={hoveredID}
             height="794px"
