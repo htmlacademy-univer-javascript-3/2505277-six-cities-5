@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { changeCity } from './action';
 import { OfferData } from '../types/offers';
-import { initialCityOffers } from '../mock/offers';
+
 import {
   changeSortingType,
   fillingOfferList,
@@ -17,7 +17,7 @@ type State = {
 };
 const initialState: State = {
   city: 'Paris',
-  offersList: initialCityOffers,
+  offersList: [],
   sortingBy: 'Popular',
   authorizationStatus: AuthorizationStatus.Unknown,
 };

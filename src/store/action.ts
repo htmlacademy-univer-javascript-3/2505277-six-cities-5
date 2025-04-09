@@ -10,9 +10,11 @@ const changeSortingType = createAction<string>('sorting/chanfeSortingType');
 const requireAuthorization = createAction<AuthorizationStatus>(
   'user/requireAuthorization'
 );
+const loadOffers = createAction<OfferData[]>('data/loadOffers');
 export {
   changeCity,
   fillingOfferList,
   changeSortingType,
   requireAuthorization,
+  loadOffers,
 };
