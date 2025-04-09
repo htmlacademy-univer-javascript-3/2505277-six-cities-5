@@ -9,4 +9,5 @@ enum APIRoute {
   Login = '/login',
   Logout = '/logout',
 }
-export { AppRoute, APIRoute };
+const TIMEOUT_SHOW_ERROR = 2000;
+export { AppRoute, APIRoute, TIMEOUT_SHOW_ERROR };
