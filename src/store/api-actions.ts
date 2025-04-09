@@ -4,7 +4,6 @@ import { AxiosInstance } from 'axios';
 import { OfferData } from '../types/offers';
 import { APIRoute } from '../const/routes';
 import { loadOffers, requireAuthorization } from './action';
-import { ap } from 'vitest/dist/reporters-5f784f42.js';
 import { AuthorizationStatus } from '../const/auth';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';

@@ -6,6 +6,7 @@ import {
   changeSortingType,
   fillingOfferList,
   requireAuthorization,
+  setError,
 } from './action';
 import { AuthorizationStatus } from '../const/auth';
 
@@ -14,12 +15,14 @@ type State = {
   offersList: OfferData[];
   sortingBy: string;
   authorizationStatus: AuthorizationStatus;
+  error: string | null;
 };
 const initialState: State = {
   city: 'Paris',
   offersList: [],
   sortingBy: 'Popular',
   authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -35,6 +38,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 
