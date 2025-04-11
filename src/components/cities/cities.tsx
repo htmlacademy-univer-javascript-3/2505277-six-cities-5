@@ -8,7 +8,7 @@ import { useAppSelector } from '../../hooks';
 function Cities(): JSX.Element {
   const [hoveredID, setHoveredID] = useState('');
   const city = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offersList);
+  const offers = useAppSelector((state) => state.offerSortingList);
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -34,7 +34,11 @@ function Cities(): JSX.Element {
         </section>
         <div className="cities__right-section">
           <Map
-            cityLocation={offers[0].location}
+            cityLocation={{
+              latitude: 52.3909553943508,
+              longitude: 4.85309666406198,
+              zoom: 8,
+            }}
             hoveredID={hoveredID}
             height="794px"
             width="500px"

@@ -6,7 +6,7 @@ import leaflet from 'leaflet';
 import { useAppSelector } from '../../hooks';
 
 type MapProps = {
-  nearestOffers ?:OfferData[];
+  nearestOffers?: OfferData[];
   cityLocation: LocationData;
   hoveredID: string;
   height: string;
@@ -14,7 +14,7 @@ type MapProps = {
   marginBottom: string;
 };
 function Map({
-  nearestOffers ,
+  nearestOffers,
   height = '794px',
   width = '500px',
   cityLocation,
@@ -23,13 +23,13 @@ function Map({
 }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, cityLocation);
-  const offers = useAppSelector((state) => state.offersList);
+  const offers = useAppSelector((state) => state.offerSortingList);
   useEffect(() => {
     if (!map) {
       return;
     }
     const markers = leaflet.layerGroup();
-    const dataToRender = nearestOffers ?.length ? nearestOffers : offers;
+    const dataToRender = nearestOffers?.length ? nearestOffers : offers;
 
     dataToRender.forEach((offer) => {
       leaflet
@@ -51,16 +51,16 @@ function Map({
       markers.clearLayers();
       map.removeLayer(markers);
     };
-  }, [map,nearestOffers , offers, hoveredID]);
+  }, [map, nearestOffers, offers, hoveredID]);
 
-  useEffect(()=>{
-    if(map){
+  useEffect(() => {
+    if (map) {
       map.setView(
         [offers[0].location.latitude, offers[0].location.longitude],
-        offers[0].location.zoom
+        12
       );
     }
-  },[map,offers]);
+  }, [map, offers]);
   return (
     <div
       style={{ height, width, margin: 'auto', marginBottom }}

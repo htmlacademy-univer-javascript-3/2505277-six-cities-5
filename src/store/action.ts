@@ -1,22 +1,14 @@
 /* eslint-disable arrow-body-style */
 import { createAction } from '@reduxjs/toolkit';
-import { AuthorizationStatus } from '../const/auth';
 import { OfferData } from '../types/offers';
+import { AuthorizationStatus } from '../const/auth';
 
 const changeCity = createAction<string>('offers/changeCity');
 
-const fillingOfferList = createAction<OfferData[]>('offers/fillingOfferList');
+const fillingOfferSortingList = createAction<OfferData[]>('offers/fillingOfferSortingList');
 const changeSortingType = createAction<string>('sorting/chanfeSortingType');
-const requireAuthorization = createAction<AuthorizationStatus>(
-  'user/requireAuthorization'
-);
-const loadOffers = createAction<OfferData[]>('data/loadOffers');
-const setError = createAction<string | null>('offers/setErrorr');
-export {
-  changeCity,
-  fillingOfferList,
-  changeSortingType,
-  requireAuthorization,
-  loadOffers,
-  setError,
-};
+const loadOffers = createAction<OfferData[]>('offers/loadOffers');
+const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
+
+export { setOffersDataLoadingStatus,requireAuthorization,changeCity, fillingOfferSortingList, changeSortingType, loadOffers };
