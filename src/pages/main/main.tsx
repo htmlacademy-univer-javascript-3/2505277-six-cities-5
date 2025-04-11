@@ -1,12 +1,7 @@
 import { Cities } from '../../components/cities/cities';
-import { OfferData } from '../../types/offers';
 import { CitiesList } from '../../components/cities-list/cities-list';
 
-type MainProps = {
-  offers: OfferData[];
-};
-
-function Main({ offers }: MainProps): JSX.Element {
+function Main(): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -51,7 +46,7 @@ function Main({ offers }: MainProps): JSX.Element {
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <CitiesList offers={offers} />
+          <CitiesList />
         </div>
         <Cities />
       </main>

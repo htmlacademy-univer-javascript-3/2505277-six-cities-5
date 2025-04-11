@@ -7,19 +7,18 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const/auth';
 import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
-import { OfferData } from '../../types/offers';
+import { useAppSelector } from '../../hooks';
+import { LoadingScreen } from '../loading-screen/loading-screen';
 
-
-type AppScreenProps = {
-  offers: OfferData[];
-};
-
-function App({ offers }: AppScreenProps): JSX.Element {
-
+function App(): JSX.Element {
+  const isOffersDataLoading = useAppSelector((state)=>state.isOffersDataLoading);
+  if(isOffersDataLoading){
+    return (<LoadingScreen />);
+  }
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Main} element={<Main offers={offers} />} />
+        <Route path={AppRoute.Main} element={<Main />} />
         <Route path={AppRoute.Login} element={<Login />} />
         <Route
           path={AppRoute.Favorites}

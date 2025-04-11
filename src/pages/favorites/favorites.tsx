@@ -2,7 +2,7 @@ import { FavoritesCard } from '../../components/favorites-card/favorites-card';
 import { useAppSelector } from '../../hooks';
 
 function Favorites(): JSX.Element {
-  const offers = useAppSelector((state)=>state.offersList);
+  const offers = useAppSelector((state)=>state.offerSortingList);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">

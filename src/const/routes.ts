@@ -4,4 +4,10 @@ enum AppRoute {
   Favorites = '/favorites',
   Offer = '/offer/:id',
 }
-export { AppRoute };
+
+ enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+}
+export { AppRoute,APIRoute };

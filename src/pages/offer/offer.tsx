@@ -27,7 +27,7 @@ function Offer(): JSX.Element {
       name: names[getRandomNum(0, 7)],
     },
   ]);
-  const offers = useAppSelector((state)=>state.offersList);
+  const offers = useAppSelector((state)=>state.offerSortingList);
   const [hoveredOfferID, setHoveredOfferID] = useState('');
   const addReview = (newReview: Omit<OfferProps, 'id' | 'name'>) => {
     const reviewWithId = {

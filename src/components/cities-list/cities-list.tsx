@@ -1,27 +1,21 @@
 import { cities } from '../../const/city';
 import { CitiesItem } from '../cities-item/cities-item';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCity } from '../../store/action';
-import { OfferData } from '../../types/offers';
-import { fillingOfferList } from '../../store/action';
+import { changeCity, fillingOfferSortingList } from '../../store/action';
 import { useEffect } from 'react';
 import { sortingByType } from '../../utils/common';
 
-type CitiesListProps = {
-  offers: OfferData[];
-};
-
-function CitiesList({ offers }: CitiesListProps): JSX.Element {
+function CitiesList(): JSX.Element {
   const dispatch = useAppDispatch();
   const currentCity = useAppSelector((state) => state.city);
   const sortingType = useAppSelector((state) => state.sortingBy);
-
+  const offers = useAppSelector((state) => state.offers);
   useEffect(() => {
     let offersFiltered = offers.filter(
       (offer) => offer.city.name === currentCity
     );
     offersFiltered = sortingByType(sortingType, offersFiltered);
-    dispatch(fillingOfferList(offersFiltered));
+    dispatch(fillingOfferSortingList(offersFiltered));
   }, [offers, currentCity, dispatch, sortingType]);
   return (
     <section className="locations container">
