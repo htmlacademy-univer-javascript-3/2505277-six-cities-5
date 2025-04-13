@@ -11,9 +11,17 @@ import { useAppSelector } from '../../hooks';
 import { LoadingScreen } from '../loading-screen/loading-screen';
 
 function App(): JSX.Element {
-  const isOffersDataLoading = useAppSelector((state)=>state.isOffersDataLoading);
-  if(isOffersDataLoading){
-    return (<LoadingScreen />);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+  const isOffersDataLoading = useAppSelector(
+    (state) => state.isOffersDataLoading
+  );
+  if (
+    authorizationStatus === AuthorizationStatus.Unknown ||
+    isOffersDataLoading
+  ) {
+    return <LoadingScreen />;
   }
   return (
     <BrowserRouter>
@@ -23,9 +31,7 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRouteComponent
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
+            <PrivateRouteComponent authorizationStatus={authorizationStatus}>
               <Favorites />
             </PrivateRouteComponent>
           }

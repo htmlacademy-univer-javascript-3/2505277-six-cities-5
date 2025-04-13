@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CommentForm } from '../../components/comment-form/comment-form';
 import { ReviewsList } from '../../components/reviews-list/reviews-list';
@@ -9,6 +9,7 @@ import { OfferData } from '../../types/offers';
 import { names } from '../../mock/names';
 import { getRandomNum } from '../../utils/common';
 import { useAppSelector } from '../../hooks';
+import { sortingByType } from '../../utils/common';
 type OfferProps = {
   rating: number;
   text: string;
@@ -27,7 +28,15 @@ function Offer(): JSX.Element {
       name: names[getRandomNum(0, 7)],
     },
   ]);
-  const offers = useAppSelector((state)=>state.offerSortingList);
+  const [offersFiltered, setOffersFiltered] = useState<OfferData[]>([]);
+  const currentCity = useAppSelector((state) => state.city);
+  const sortingType = useAppSelector((state) => state.sortingBy);
+  const offers = useAppSelector((state) => state.offers);
+  useEffect(() => {
+    let filtered = offers.filter((offer) => offer.city.name === currentCity);
+    filtered = sortingByType(sortingType, filtered);
+    setOffersFiltered(filtered);
+  }, [offers, currentCity, sortingType]);
   const [hoveredOfferID, setHoveredOfferID] = useState('');
   const addReview = (newReview: Omit<OfferProps, 'id' | 'name'>) => {
     const reviewWithId = {
@@ -38,14 +47,13 @@ function Offer(): JSX.Element {
     setReviews([...reviews, reviewWithId]);
   };
 
-
   const { id } = useParams();
 
-  const selectedOffer: OfferData | undefined = offers.find(
+  const selectedOffer: OfferData | undefined = offersFiltered.find(
     (offer) => offer.id === id
   );
 
-  const nearestOffers = offers.filter(
+  const nearestOffers = offersFiltered.filter(
     (offer) => offer.id !== selectedOffer?.id
   );
   return (
@@ -162,7 +170,6 @@ function Offer(): JSX.Element {
                       }%`,
                     }}
                   >
-
                   </span>
                   <span className="visually-hidden">Rating</span>
                 </div>
@@ -241,7 +248,7 @@ function Offer(): JSX.Element {
             </div>
           </div>
           <Map
-            nearestOffers ={nearestOffers }
+            nearestOffers={nearestOffers}
             cityLocation={offers[0].location}
             hoveredID={hoveredOfferID}
             height="579px"

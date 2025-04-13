@@ -1,9 +1,10 @@
 import { useMap } from '../../hooks/useMap';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LocationData, OfferData } from '../../types/offers';
 import { defaulCustomIcon, activeCustomIcon } from '../../const/map';
 import leaflet from 'leaflet';
 import { useAppSelector } from '../../hooks';
+import { sortingByType } from '../../utils/common';
 
 type MapProps = {
   nearestOffers?: OfferData[];
@@ -23,13 +24,21 @@ function Map({
 }: MapProps): JSX.Element {
   const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, cityLocation);
-  const offers = useAppSelector((state) => state.offerSortingList);
+  const [offersFiltered, setOffersFiltered] = useState<OfferData[]>([]);
+  const currentCity = useAppSelector((state) => state.city);
+  const sortingType = useAppSelector((state) => state.sortingBy);
+  const offers = useAppSelector((state) => state.offers);
+  useEffect(() => {
+    let filtered = offers.filter((offer) => offer.city.name === currentCity);
+    filtered = sortingByType(sortingType, filtered);
+    setOffersFiltered(filtered);
+  }, [offers, currentCity, sortingType]);
   useEffect(() => {
     if (!map) {
       return;
     }
     const markers = leaflet.layerGroup();
-    const dataToRender = nearestOffers?.length ? nearestOffers : offers;
+    const dataToRender = nearestOffers?.length ? nearestOffers : offersFiltered;
 
     dataToRender.forEach((offer) => {
       leaflet
@@ -51,16 +60,19 @@ function Map({
       markers.clearLayers();
       map.removeLayer(markers);
     };
-  }, [map, nearestOffers, offers, hoveredID]);
+  }, [map, nearestOffers, offersFiltered, hoveredID]);
 
   useEffect(() => {
     if (map) {
       map.setView(
-        [offers[0].location.latitude, offers[0].location.longitude],
+        [
+          offersFiltered[0].location.latitude,
+          offersFiltered[0].location.longitude,
+        ],
         12
       );
     }
-  }, [map, offers]);
+  }, [map, offersFiltered]);
   return (
     <div
       style={{ height, width, margin: 'auto', marginBottom }}
