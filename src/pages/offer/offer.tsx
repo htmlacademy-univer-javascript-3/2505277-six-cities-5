@@ -40,6 +40,7 @@ function Offer(): JSX.Element {
 
 
   const { id } = useParams();
+
   const selectedOffer: OfferData | undefined = offers.find(
     (offer) => offer.id === id
   );

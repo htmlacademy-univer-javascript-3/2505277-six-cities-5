@@ -5,9 +5,11 @@ enum AppRoute {
   Offer = '/offer/:id',
 }
 
- enum APIRoute {
+enum APIRoute {
   Offers = '/offers',
   Login = '/login',
   Logout = '/logout',
+  Favorite = '/favorite',
 }
-export { AppRoute,APIRoute };
+const TIMEOUT_SHOW_ERROR = 2000;
+export { AppRoute, APIRoute, TIMEOUT_SHOW_ERROR };
