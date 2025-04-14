@@ -9,7 +9,7 @@ import {
   requireAuthorization,
   setError,
 } from './action';
-import { setOffersDataLoadingStatus } from './action';
+import { setOffersDataLoadingStatus, setUserEmail } from './action';
 import { AuthorizationStatus } from '../const/auth';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
@@ -77,6 +77,7 @@ const loginAction = createAsyncThunk<
     data: { token },
   } = await extra.api.post<UserData>(APIRoute.Login, { email, password });
   saveToken(token);
+  dispatch(setUserEmail(email));
   dispatch(requireAuthorization(AuthorizationStatus.Auth));
 });
 

@@ -19,7 +19,10 @@ const setOffersDataLoadingStatus = createAction<boolean>(
   'data/setOffersDataLoadingStatus'
 );
 
+const setUserEmail = createAction<string>('user/setEmail');
+
 const setError = createAction<string | null>('setError');
+
 export {
   setError,
   loadFavorites,
@@ -28,4 +31,5 @@ export {
   changeCity,
   changeSortingType,
   loadOffers,
+  setUserEmail,
 };

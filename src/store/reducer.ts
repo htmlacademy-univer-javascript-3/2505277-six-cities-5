@@ -9,11 +9,12 @@ import {
   requireAuthorization,
   changeSortingType,
   loadOffers,
+  setUserEmail
 } from './action';
 
 type State = {
   city: string;
-
+  userEmail:string;
   sortingBy: string;
   offers: OfferData[];
   favorite: OfferData[];
@@ -23,6 +24,7 @@ type State = {
 };
 const initialState: State = {
   city: 'Paris',
+  userEmail:'',
   sortingBy: 'Popular',
   offers: [],
   favorite: [],
@@ -53,6 +55,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setUserEmail, (state, action) => {
+      state.userEmail = action.payload;
     });
 });
 
