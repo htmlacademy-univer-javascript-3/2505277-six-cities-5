@@ -9,8 +9,17 @@ import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import { LoadingScreen } from '../loading-screen/loading-screen';
+import { fetchOffersAction , fetchFavoritesAction,checkAuthAction} from '../../store/api-actions';
+import { store } from '../../store/store';
+import { useEffect } from 'react';
 
 function App(): JSX.Element {
+  useEffect(()=>{
+    store.dispatch(fetchOffersAction());
+    store.dispatch(fetchFavoritesAction());
+    store.dispatch(checkAuthAction());
+
+  },[]);
   const authorizationStatus = useAppSelector(
     (state) => state.authorizationStatus
   );
