@@ -13,7 +13,7 @@ function Card({
   onMouseLeave,
   classPrefix,
 }: CardProps): JSX.Element {
-  const handleClick = ()=>{
+  const handleClick = () => {
     window.scrollTo(0, 0);
   };
   return (
@@ -35,9 +35,7 @@ function Card({
         <Link to="offer/:id">
           <img
             className="place-card__image"
-            src={`img/${
-              offer.type === 'apartment' ? `${offer.type}-02` : `${offer.type}`
-            }.jpg`}
+            src={`${offer.previewImage}`}
             width="260"
             height="200"
             alt="Place image"

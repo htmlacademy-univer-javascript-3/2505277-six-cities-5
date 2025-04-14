@@ -7,26 +7,40 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const/auth';
 import { AppRoute } from '../../const/routes';
 import { PrivateRouteComponent } from '../private-route/private-route';
-import { OfferData } from '../../types/offers';
+import { useAppSelector } from '../../hooks';
+import { LoadingScreen } from '../loading-screen/loading-screen';
+import { fetchOffersAction , fetchFavoritesAction,checkAuthAction} from '../../store/api-actions';
+import { store } from '../../store/store';
+import { useEffect } from 'react';
 
+function App(): JSX.Element {
+  useEffect(()=>{
+    store.dispatch(fetchOffersAction());
+    store.dispatch(fetchFavoritesAction());
+    store.dispatch(checkAuthAction());
 
-type AppScreenProps = {
-  offers: OfferData[];
-};
-
-function App({ offers }: AppScreenProps): JSX.Element {
-
+  },[]);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+  const isOffersDataLoading = useAppSelector(
+    (state) => state.isOffersDataLoading
+  );
+  if (
+    authorizationStatus === AuthorizationStatus.Unknown ||
+    isOffersDataLoading
+  ) {
+    return <LoadingScreen />;
+  }
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Main} element={<Main offers={offers} />} />
+        <Route path={AppRoute.Main} element={<Main />} />
         <Route path={AppRoute.Login} element={<Login />} />
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRouteComponent
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
+            <PrivateRouteComponent authorizationStatus={authorizationStatus}>
               <Favorites />
             </PrivateRouteComponent>
           }
