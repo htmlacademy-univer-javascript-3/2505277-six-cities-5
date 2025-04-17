@@ -1,15 +1,19 @@
+import { Link } from 'react-router-dom';
 import { FavoritesCard } from '../../components/favorites-card/favorites-card';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/api-actions';
 
 function Favorites(): JSX.Element {
   const favorites = useAppSelector((state) => state.favorite);
+  const email = localStorage.getItem('userEmail');
+  const dispatch = useAppDispatch();
   return (
     <div className="page">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <Link className="header__logo-link" to="/">
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -17,7 +21,7 @@ function Favorites(): JSX.Element {
                   width="81"
                   height="41"
                 />
-              </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -28,13 +32,18 @@ function Favorites(): JSX.Element {
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
+                      {email}
                     </span>
                     <span className="header__favorite-count">3</span>
                   </a>
                 </li>
                 <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
+                  <a
+                    className="header__nav-link"
+                    onClick={() => {
+                      dispatch(logoutAction());
+                    }}
+                  >
                     <span className="header__signout">Sign out</span>
                   </a>
                 </li>
@@ -49,9 +58,15 @@ function Favorites(): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {favorites.map((offer) => (
-                <FavoritesCard key={offer.id} offer={offer} />
-              ))}
+              {favorites.length > 0 ? (
+                favorites.map((offer) => (
+                  <FavoritesCard key={offer.id} offer={offer} />
+                ))
+              ) : (
+                <div style={{ fontSize: '40px', textAlign: 'center' }}>
+                  Nothing yet saved
+                </div>
+              )}
             </ul>
           </section>
         </div>

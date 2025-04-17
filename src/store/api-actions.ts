@@ -16,9 +16,11 @@ import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 import { TIMEOUT_SHOW_ERROR } from '../const/routes';
 import { store } from './store';
+
 type ThunkExtra = {
   api: AxiosInstance;
 };
+
 const fetchOffersAction = createAsyncThunk<
   void,
   undefined,
@@ -30,6 +32,7 @@ const fetchOffersAction = createAsyncThunk<
 >('data/fetchOffers', async (_arg, { dispatch, extra }) => {
   dispatch(setOffersDataLoadingStatus(true));
   const { data } = await extra.api.get<OfferData[]>(APIRoute.Offers);
+
   dispatch(setOffersDataLoadingStatus(false));
   dispatch(loadOffers(data));
 });
@@ -42,7 +45,7 @@ const fetchFavoritesAction = createAsyncThunk<
     state: State;
     extra: ThunkExtra;
   }
->('data/fetchFavorites', async (_arg, { dispatch, extra }) => {
+>('data/fetchOffers', async (_arg, { dispatch, extra }) => {
   const { data } = await extra.api.get<OfferData[]>(APIRoute.Favorite);
   dispatch(loadFavorites(data));
 });
@@ -77,9 +80,34 @@ const loginAction = createAsyncThunk<
     data: { token },
   } = await extra.api.post<UserData>(APIRoute.Login, { email, password });
   saveToken(token);
+  localStorage.setItem('userEmail', email);
   dispatch(setUserEmail(email));
   dispatch(requireAuthorization(AuthorizationStatus.Auth));
 });
+
+const changeStatus = createAsyncThunk<
+  OfferData,
+  {
+    offerID: string;
+    status: number;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: ThunkExtra;
+  }
+>(
+  'favorites/changeStatus',
+  async ({ offerID, status }, { dispatch, extra }) => {
+    const { data } = await extra.api.post<OfferData>(
+      `${APIRoute.Favorite}/${offerID}/${status}`
+    );
+
+    dispatch(fetchOffersAction());
+    dispatch(fetchFavoritesAction());
+    return data;
+  }
+);
 
 const logoutAction = createAsyncThunk<
   void,
@@ -105,4 +133,5 @@ export {
   logoutAction,
   fetchOffersAction,
   fetchFavoritesAction,
+  changeStatus,
 };
