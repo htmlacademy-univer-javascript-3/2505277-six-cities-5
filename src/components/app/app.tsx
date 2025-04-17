@@ -18,14 +18,15 @@ import { store } from '../../store/store';
 import { useEffect } from 'react';
 
 function App(): JSX.Element {
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+
   useEffect(() => {
     store.dispatch(fetchOffersAction());
     store.dispatch(fetchFavoritesAction());
     store.dispatch(checkAuthAction());
   }, []);
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
   const isOffersDataLoading = useAppSelector(
     (state) => state.isOffersDataLoading
   );

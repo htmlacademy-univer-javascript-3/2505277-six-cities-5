@@ -1,6 +1,7 @@
+import { changeStatus } from '../../store/api-actions';
 import { OfferData } from '../../types/offers';
 import { Link } from 'react-router-dom';
-
+import { store } from '../../store/store';
 type FavoritesProps = {
   offer: OfferData;
 };
@@ -40,8 +41,18 @@ function FavoritesCard({ offer }: FavoritesProps): JSX.Element {
                 <span className="place-card__price-text">&#47;&nbsp;night</span>
               </div>
               <button
-                className="place-card__bookmark-button place-card__bookmark-button--active button"
+                className={`place-card__bookmark-button ${
+                  offer.isFavorite ? 'place-card__bookmark-button--active' : ''
+                } button`}
                 type="button"
+                onClick={() => {
+                  store.dispatch(
+                    changeStatus({
+                      offerID: offer.id,
+                      status: offer.isFavorite ? 0 : 1,
+                    })
+                  );
+                }}
               >
                 <svg
                   className="place-card__bookmark-icon"

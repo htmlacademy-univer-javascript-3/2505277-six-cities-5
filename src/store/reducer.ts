@@ -9,12 +9,12 @@ import {
   requireAuthorization,
   changeSortingType,
   loadOffers,
-  setUserEmail
+  setUserEmail,
 } from './action';
 
 type State = {
   city: string;
-  userEmail:string;
+  userEmail: string;
   sortingBy: string;
   offers: OfferData[];
   favorite: OfferData[];
@@ -24,7 +24,7 @@ type State = {
 };
 const initialState: State = {
   city: 'Paris',
-  userEmail:'',
+  userEmail: '',
   sortingBy: 'Popular',
   offers: [],
   favorite: [],
