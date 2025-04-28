@@ -1,25 +1,38 @@
+import { useMemo, useState } from 'react';
+import { MemoizedOffersMap } from '../map/map';
 import { Card } from '../card/сard';
-import { appendSForPlural } from '../../utils/common';
-import { SortingOptionsList } from '../sorting-options-list/sorting-options-list';
-import { useState } from 'react';
-import { Map } from '../map/map';
 import { useAppSelector } from '../../hooks';
-import { useEffect } from 'react';
-import { OfferData } from '../../types/offers';
+import { appendSForPlural } from '../../utils/common';
 import { sortingByType } from '../../utils/common';
+import { getOffers } from '../../store/offers-data/selectors';
+import { getCurrentCity, getSortingType } from '../../store/app-data/selectors';
+import { SortingOptionsList } from '../sorting-options-list/sorting-options-list';
+
 function Cities(): JSX.Element {
   const [hoveredID, setHoveredID] = useState('');
-  const [offersFiltered, setOffersFiltered] = useState<OfferData[]>([]);
-  const city = useAppSelector((state) => state.city);
 
-  const currentCity = useAppSelector((state) => state.city);
-  const sortingType = useAppSelector((state) => state.sortingBy);
-  const offers = useAppSelector((state) => state.offers);
-  useEffect(() => {
-    let filtered = offers.filter((offer) => offer.city.name === currentCity);
-    filtered = sortingByType(sortingType, filtered);
-    setOffersFiltered(filtered);
+  const currentCity = useAppSelector(getCurrentCity);
+  const sortingType = useAppSelector(getSortingType);
+  const offers = useAppSelector(getOffers);
+
+  const offersFiltered = useMemo(() => {
+    const filtered = offers.filter((offer) => offer.city.name === currentCity);
+    return sortingByType(sortingType, filtered);
   }, [offers, currentCity, sortingType]);
+
+  const cardList = useMemo(
+    () =>
+      offersFiltered.map((offer) => (
+        <Card
+          key={offer.id}
+          offer={offer}
+          onMouseLeave={() => setHoveredID('')}
+          onMouseEnter={() => setHoveredID(offer.id)}
+          classPrefix="cities"
+        />
+      )),
+    [offersFiltered]
+  );
   return (
     <div className="cities">
       <div className="cities__places-container container">
@@ -28,28 +41,16 @@ function Cities(): JSX.Element {
           <b className="places__found">
             {' '}
             {offersFiltered.length} place
-            {appendSForPlural(offersFiltered.length)} to stay in {city}
+            {appendSForPlural(offersFiltered.length)} to stay in {currentCity}
           </b>
           <SortingOptionsList />
           <div className="cities__places-list places__list tabs__content">
-            {offersFiltered.map((offer) => (
-              <Card
-                key={offer.id}
-                offer={offer}
-                onMouseLeave={() => setHoveredID('')}
-                onMouseEnter={() => setHoveredID(offer.id)}
-                classPrefix="cities"
-              />
-            ))}
+            {cardList}
           </div>
         </section>
         <div className="cities__right-section">
-          <Map
-            cityLocation={{
-              latitude: 52.3909553943508,
-              longitude: 4.85309666406198,
-              zoom: 8,
-            }}
+          <MemoizedOffersMap
+            cityLocation={offers[0].location}
             hoveredID={hoveredID}
             height="794px"
             width="500px"

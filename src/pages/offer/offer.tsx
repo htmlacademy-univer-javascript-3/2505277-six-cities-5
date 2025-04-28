@@ -1,157 +1,110 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { CommentForm } from '../../components/comment-form/comment-form';
-import { ReviewsList } from '../../components/reviews-list/reviews-list';
-
-import { Map } from '../../components/map/map';
-import { Card } from '../../components/card/сard';
-import { OfferData } from '../../types/offers';
-import { names } from '../../mock/names';
-import { getRandomNum } from '../../utils/common';
+import { store } from '../../store/store';
 import { useAppSelector } from '../../hooks';
-import { sortingByType } from '../../utils/common';
-type OfferProps = {
-  rating: number;
-  text: string;
-  date: string;
-  id: string;
-  name: string;
-};
+import { MemoizedOffersMap } from '../../components/map/map';
+import { Review } from '../../types/comments';
+import { Card } from '../../components/card/сard';
+import { Header } from '../../components/header/header';
+import { getOffers } from '../../store/offers-data/selectors';
+import { OfferData, SelectedOffer } from '../../types/offers';
+import { ReviewsList } from '../../components/reviews-list/reviews-list';
+import { CommentForm } from '../../components/comment-form/comment-form';
+import {
+  fetchSelectedOffersAction,
+  fetchNearbyOfferAction,
+  fetchCommentsAction,
+} from '../../store/api-actions';
+import { useCallback } from 'react';
 
 function Offer(): JSX.Element {
-  const [reviews, setReviews] = useState<OfferProps[]>([
-    {
-      rating: 4,
-      text: 'Great place to stay!',
-      date: '2024-03-22',
-      id: '1',
-      name: names[getRandomNum(0, 7)],
-    },
-  ]);
-  const [offersFiltered, setOffersFiltered] = useState<OfferData[]>([]);
-  const currentCity = useAppSelector((state) => state.city);
-  const sortingType = useAppSelector((state) => state.sortingBy);
-  const offers = useAppSelector((state) => state.offers);
-  useEffect(() => {
-    let filtered = offers.filter((offer) => offer.city.name === currentCity);
-    filtered = sortingByType(sortingType, filtered);
-    setOffersFiltered(filtered);
-  }, [offers, currentCity, sortingType]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [selectOffer, setSelectOffer] = useState<SelectedOffer | null>(null);
+  const [nearbyOffers, setNearbyOffers] = useState<OfferData[] | undefined>(
+    undefined
+  );
+
   const [hoveredOfferID, setHoveredOfferID] = useState('');
-  const addReview = (newReview: Omit<OfferProps, 'id' | 'name'>) => {
-    const reviewWithId = {
-      ...newReview,
-      id: Date.now().toString(),
-      name: names[getRandomNum(0, 7)],
-    };
-    setReviews([...reviews, reviewWithId]);
-  };
+
+  const offers = useAppSelector(getOffers);
 
   const { id } = useParams();
 
-  const selectedOffer: OfferData | undefined = offersFiltered.find(
-    (offer) => offer.id === id
+  const handleMouseEnter = useCallback((ID: string) => {
+    setHoveredOfferID(ID);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredOfferID('');
+  }, []);
+
+  const nearbyList = useMemo(
+    () =>
+      nearbyOffers?.map((offer) => (
+        <Card
+          key={offer.id}
+          offer={offer}
+          onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => handleMouseEnter(offer.id)}
+          classPrefix="near-places"
+        />
+      )),
+    [nearbyOffers, handleMouseLeave, handleMouseEnter]
   );
 
-  const nearestOffers = offersFiltered.filter(
-    (offer) => offer.id !== selectedOffer?.id
-  );
+  const reloadsComments = useCallback(() => {
+    store
+      .dispatch(fetchCommentsAction({ offerID: id }))
+      .unwrap()
+      .then((data) => {
+        setReviews(data);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      reloadsComments();
+    }
+  }, [id, reloadsComments]);
+
+  useEffect(() => {
+    store
+      .dispatch(fetchSelectedOffersAction({ offerID: id }))
+      .unwrap()
+      .then((data) => setSelectOffer(data));
+    store
+      .dispatch(fetchNearbyOfferAction({ offerID: id }))
+      .unwrap()
+      .then((data) => setNearbyOffers(data));
+  }, [id]);
+
+  const memorizedHeader = useMemo(() => <Header />, []);
+
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link" href="#">
-                <img
-                  className="header__logo"
-                  src="img/logo.svg"
-                  alt="6 cities logo"
-                  width="81"
-                  height="41"
-                />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a
-                    className="header__nav-link header__nav-link--profile"
-                    href="#"
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
-                    </span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      {memorizedHeader}
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/room.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-02.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-03.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/studio-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
+              {selectOffer?.images.map((image) => (
+                <div key={image} className="offer__image-wrapper">
+                  <img
+                    className="offer__image"
+                    src={image}
+                    alt="Photo studio"
+                  />
+                </div>
+              ))}
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
               <div className="offer__mark">
-                <span>{selectedOffer?.isPremium}</span>
+                <span>{selectOffer?.isPremium}</span>
               </div>
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">{selectedOffer?.title}</h1>
+                <h1 className="offer__name">{selectOffer?.title}</h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -164,9 +117,7 @@ function Offer(): JSX.Element {
                   <span
                     style={{
                       width: `${
-                        selectedOffer?.rating
-                          ? selectedOffer?.rating * 20
-                          : 20 * 3
+                        selectOffer?.rating ? selectOffer?.rating * 20 : 20 * 3
                       }%`,
                     }}
                   >
@@ -174,7 +125,7 @@ function Offer(): JSX.Element {
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">
-                  {selectedOffer?.rating}
+                  {selectOffer?.rating}
                 </span>
               </div>
               <ul className="offer__features">
@@ -190,7 +141,7 @@ function Offer(): JSX.Element {
               </ul>
               <div className="offer__price">
                 <b className="offer__price-value">
-                  &euro; {selectedOffer?.price}
+                  &euro; {selectOffer?.price}
                 </b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
@@ -243,12 +194,12 @@ function Offer(): JSX.Element {
                   <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ReviewsList reviews={reviews} />
-                <CommentForm onAddReview={addReview} />
+                <CommentForm onCommentSent={reloadsComments} />
               </section>
             </div>
           </div>
-          <Map
-            nearestOffers={nearestOffers}
+          <MemoizedOffersMap
+            nearestOffers={nearbyOffers}
             cityLocation={offers[0].location}
             hoveredID={hoveredOfferID}
             height="579px"
@@ -261,17 +212,7 @@ function Offer(): JSX.Element {
             <h2 className="near-places__title">
               Other places in the neighbourhood
             </h2>
-            <div className="near-places__list places__list">
-              {nearestOffers.map((offer) => (
-                <Card
-                  key={offer.id}
-                  offer={offer}
-                  onMouseLeave={() => setHoveredOfferID('')}
-                  onMouseEnter={() => setHoveredOfferID(offer.id)}
-                  classPrefix="near-places"
-                />
-              ))}
-            </div>
+            <div className="near-places__list places__list">{nearbyList}</div>
           </section>
         </div>
       </main>

@@ -1,21 +1,20 @@
 import { Link } from 'react-router-dom';
 import { OfferData } from '../../types/offers';
-
-type CardProps = {
+import { store } from '../../store/store';
+import { changeStatus } from '../../store/api-actions';
+import React from 'react';
+export type CardProps = {
   offer: OfferData;
   onMouseLeave?: () => void;
   onMouseEnter?: () => void;
   classPrefix?: string;
 };
-function Card({
-  offer,
-  onMouseEnter,
-  onMouseLeave,
-  classPrefix,
-}: CardProps): JSX.Element {
+
+function Card({ offer, onMouseEnter, onMouseLeave, classPrefix }: CardProps) {
   const handleClick = () => {
     window.scrollTo(0, 0);
   };
+
   return (
     <article
       className={`${classPrefix}__card place-card`}
@@ -28,7 +27,6 @@ function Card({
           <span>Premium</span>
         </div>
       )}
-
       <div
         className={`${classPrefix}__image-wrapper place-card__image-wrapper`}
       >
@@ -49,6 +47,14 @@ function Card({
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
+            onClick={() => {
+              store.dispatch(
+                changeStatus({
+                  offerID: offer.id,
+                  status: offer.isFavorite ? 0 : 1,
+                })
+              );
+            }}
             className={`place-card__bookmark-button${
               offer.isFavorite ? ' place-card__bookmark-button--active' : ''
             } button`}
@@ -74,4 +80,7 @@ function Card({
     </article>
   );
 }
-export { Card, type CardProps };
+
+const MemoizedCard = React.memo(Card);
+
+export { MemoizedCard as Card };

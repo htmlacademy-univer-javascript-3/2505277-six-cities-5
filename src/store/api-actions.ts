@@ -1,50 +1,133 @@
 import { APIRoute } from '../const/routes';
-import { OfferData } from '../types/offers';
+import { OfferData, SelectedOffer } from '../types/offers';
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { State, AppDispatch } from '../types/state';
-import {
-  loadOffers,
-  loadFavorites,
-  requireAuthorization,
-  setError,
-} from './action';
-import { setOffersDataLoadingStatus, setUserEmail } from './action';
-import { AuthorizationStatus } from '../const/auth';
+import { addComm, setError } from './app-data/app-data';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 import { TIMEOUT_SHOW_ERROR } from '../const/routes';
 import { store } from './store';
+import { setUserEmail } from './user-process/user-process';
+import { Review } from '../types/comments';
+
 type ThunkExtra = {
   api: AxiosInstance;
 };
+
 const fetchOffersAction = createAsyncThunk<
-  void,
+  OfferData[],
   undefined,
   {
     dispatch: AppDispatch;
     state: State;
     extra: ThunkExtra;
   }
->('data/fetchOffers', async (_arg, { dispatch, extra }) => {
-  dispatch(setOffersDataLoadingStatus(true));
+>('data/fetchOffers', async (_arg, { extra }) => {
   const { data } = await extra.api.get<OfferData[]>(APIRoute.Offers);
-  dispatch(setOffersDataLoadingStatus(false));
-  dispatch(loadOffers(data));
+  return data;
+});
+
+const fetchSelectedOffersAction = createAsyncThunk<
+  SelectedOffer,
+  { offerID: string | undefined },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: ThunkExtra;
+  }
+>('data/fetchSelectedOffers', async ({ offerID }, { extra }) => {
+  const { data } = await extra.api.get<SelectedOffer>(
+    `${APIRoute.Offers}/${offerID}`
+  );
+
+  return data;
+});
+
+const fetchNearbyOfferAction = createAsyncThunk<
+  OfferData[],
+  { offerID: string | undefined },
+  { dispatch: AppDispatch; state: State; extra: ThunkExtra }
+>('data/fetchNearbyOffer', async ({ offerID }, { extra }) => {
+  const { data } = await extra.api.get<OfferData[]>(
+    `${APIRoute.Offers}/${offerID}/nearby`
+  );
+  return data;
+});
+
+const fetchCommentsAction = createAsyncThunk<
+Review[],
+  { offerID: string | undefined },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: ThunkExtra;
+  }
+>('data/fetchComments', async ({ offerID }, { extra }) => {
+  const { data } = await extra.api.get<Review[]>(
+    `${APIRoute.Comments}/${offerID}`
+  );
+  return data;
 });
 
 const fetchFavoritesAction = createAsyncThunk<
-  void,
+  OfferData[],
   undefined,
   {
     dispatch: AppDispatch;
     state: State;
     extra: ThunkExtra;
   }
->('data/fetchFavorites', async (_arg, { dispatch, extra }) => {
+>('data/fetchFavoriteOffers', async (_arg, { extra }) => {
   const { data } = await extra.api.get<OfferData[]>(APIRoute.Favorite);
-  dispatch(loadFavorites(data));
+
+  return data;
+});
+
+const changeStatus = createAsyncThunk<
+  OfferData,
+  {
+    offerID: string;
+    status: number;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: ThunkExtra;
+  }
+>('data/changeStatus', async ({ offerID, status }, { dispatch, extra }) => {
+  const { data } = await extra.api.post<OfferData>(
+    `${APIRoute.Favorite}/${offerID}/${status}`
+  );
+
+  dispatch(fetchOffersAction());
+  dispatch(fetchFavoritesAction());
+  return data;
+});
+
+const addComments = createAsyncThunk<
+Review,
+  {
+    offerID: string | undefined;
+    comm: {
+      comment: string;
+      rating: number;
+    };
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: ThunkExtra;
+  }
+>('data/addComments', async ({ offerID, comm }, { dispatch,extra }) => {
+  const { data } = await extra.api.post<Review>(
+    `${APIRoute.Comments}/${offerID}`,
+    comm
+  );
+
+  dispatch(addComm(data));
+  return data;
 });
 
 const checkAuthAction = createAsyncThunk<
@@ -55,13 +138,8 @@ const checkAuthAction = createAsyncThunk<
     state: State;
     extra: ThunkExtra;
   }
->('user/checkAuth', async (_arg, { dispatch, extra }) => {
-  try {
-    await extra.api.get(APIRoute.Login);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  } catch {
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  }
+>('user/checkAuth', async (_arg, { extra }) => {
+  await extra.api.get(APIRoute.Login);
 });
 
 const loginAction = createAsyncThunk<
@@ -77,8 +155,8 @@ const loginAction = createAsyncThunk<
     data: { token },
   } = await extra.api.post<UserData>(APIRoute.Login, { email, password });
   saveToken(token);
+  localStorage.setItem('userEmail', email);
   dispatch(setUserEmail(email));
-  dispatch(requireAuthorization(AuthorizationStatus.Auth));
 });
 
 const logoutAction = createAsyncThunk<
@@ -89,10 +167,9 @@ const logoutAction = createAsyncThunk<
     state: State;
     extra: ThunkExtra;
   }
->('user/logout', async (_arg, { dispatch, extra }) => {
+>('user/logout', async (_arg, { extra }) => {
   await extra.api.delete(APIRoute.Logout);
   dropToken();
-  dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
 });
 
 const clearErrorAction = createAsyncThunk('clearError', () =>
@@ -105,4 +182,9 @@ export {
   logoutAction,
   fetchOffersAction,
   fetchFavoritesAction,
+  changeStatus,
+  fetchSelectedOffersAction,
+  fetchNearbyOfferAction,
+  fetchCommentsAction,
+  addComments,
 };

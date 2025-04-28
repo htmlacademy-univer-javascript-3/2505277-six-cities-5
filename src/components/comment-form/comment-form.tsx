@@ -1,30 +1,39 @@
 import { useState, Fragment } from 'react';
+import { store } from '../../store/store';
+import { FormEvent } from 'react';
+import { useParams } from 'react-router-dom';
+import { addComments } from '../../store/api-actions';
+import { useAppDispatch } from '../../hooks';
+import { setError } from '../../store/app-data/app-data';
 
 type CommentFormProps = {
-  onAddReview: (review: { rating: number; text: string; date: string }) => void;
+  onCommentSent: () => void;
 };
-function CommentForm({ onAddReview }: CommentFormProps): JSX.Element {
+function CommentForm({ onCommentSent }: CommentFormProps): JSX.Element {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!comment.trim()) {
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!comment.trim() || rating < 1) {
       return;
     }
-
-    onAddReview({
-      rating,
-      text: comment,
-      date: new Date().toISOString().split('T')[0],
-    });
-
-    setComment('');
-    setRating(0);
+    try {
+      store
+        .dispatch(addComments({ offerID: id, comm: { comment, rating } }))
+        .unwrap();
+      onCommentSent();
+      setComment('');
+      setRating(0);
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(setError(error.message));
+      }
+    }
   };
 
-  const isSubmitDisabled = comment.length > 50 || rating === 0;
+  const isSubmitDisabled = comment.length < 50 || rating === 0;
   return (
     <form
       className="reviews__form form"
